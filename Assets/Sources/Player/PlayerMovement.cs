@@ -27,7 +27,7 @@ public class PlayerMovement : NetworkBehaviour
             return;
 
         var x = Input.GetAxis("Horizontal") * 1f * _pc.Speed;
-        if (Input.GetKeyDown(KeyCode.W)) Jump();
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) Jump();
 
         _rb2d.velocity = new Vector2(x, _rb2d.velocity.y);
     }

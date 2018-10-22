@@ -23,6 +23,7 @@ public class PlayerMain : NetworkBehaviour {
 
     // Use this for initialization
     void Start () {
+        if (!isServer) return;
         _playerId = GameObject.FindGameObjectsWithTag("Player").Length;
 	}
 	
