@@ -38,7 +38,6 @@ public class BulletMain : NetworkBehaviour {
             realPos += initVelocity * Time.deltaTime;
             lerpCounter = Mathf.Clamp(lerpCounter + Time.deltaTime, 0.0f, lerpTime + 0.1f);
             transform.position = Vector2.Lerp(initPos, targetPos, lerpCounter / lerpTime); 
-            Debug.Log(lerpCounter / lerpTime);
 
             // 보간 끝
             if (lerpCounter >= lerpTime)
