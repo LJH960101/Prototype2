@@ -8,6 +8,15 @@ public class MyNetworkManager : NetworkManager
 {
     [HideInInspector]
     public bool isServer;
+    public int count = 1;
+
+    public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
+    {
+        GameObject player = (GameObject)Instantiate(playerPrefab, GameObject.FindGameObjectWithTag("Prison").transform.position, Quaternion.identity);
+        player.GetComponent<PlayerMain>()._playerId = count++;
+        player.GetComponent<PlayerMain>().attackAble = false;
+        NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
+    }
 
     public override void OnServerReady(NetworkConnection conn)
     {

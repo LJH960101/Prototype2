@@ -16,4 +16,10 @@ public class PlayerConstant : MonoBehaviour
     [SerializeField]
     GameObject _bullet = null;
     public GameObject Bullet { get { return _bullet; } }
+    [SerializeField]
+    Transform _hpBar;
+    public Transform HpBar { get { return _hpBar; } }
+    [SerializeField]
+    GameObject _ragdoll;
+    public GameObject RagDoll { get { return _ragdoll; } }
 }

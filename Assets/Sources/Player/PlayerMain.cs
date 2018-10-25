@@ -4,12 +4,20 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class PlayerMain : NetworkBehaviour {
+    PlayerConstant _pc;
+    PlayerNetwork pn;
     GameObject _myAim = null;
     UnityEngine.UI.Text _moneyText;
     [SyncVar]
-    int _playerId = -1;
+    public int _playerId = -1;
     [SyncVar(hook ="OnMoneyChange")]
     int _money = 0;
+    [SyncVar(hook = "OnMaxH_pchange")]
+    public int _maxHp = 100;
+    [SyncVar(hook = "OnH_pchange")]
+    int _hp = 100;
+    [SyncVar]
+    public bool attackAble = true;
     public int Money { get { return _money; } }
     public int PlayerId { get { return _playerId; } }
     public override void OnStartLocalPlayer()
@@ -20,6 +28,21 @@ public class PlayerMain : NetworkBehaviour {
     {
         if (!isServer) _money = money;
         ShowMoney();
+    }
+    void RefreshHp()
+    {
+        _pc.HpBar.localScale = new Vector3((float)_hp / (float)_maxHp, 1.0f, 1.0f);
+        _pc.HpBar.localPosition = new Vector3( - (1.0f - ((float)_hp / (float)_maxHp)), 0.0f, -1.0f);
+    }
+    void OnMaxH_pchange(int maxHp)
+    {
+        if (!isServer) _maxHp = maxHp;
+        RefreshHp();
+    }
+    void OnH_pchange(int hp)
+    {
+        if (!isServer) _hp = hp;
+        RefreshHp();
     }
     void ShowMoney()
     {
@@ -42,13 +65,82 @@ public class PlayerMain : NetworkBehaviour {
         ShowMoney();
     }
 
+    [Command]
+    public void CmdGetDamage(int damage)
+    {
+        _hp -= damage;
+        if (_hp <= 0) CmdDie();
+        else RefreshHp();
+    }
+
+    [Command]
+    public void CmdDie()
+    {
+        bool isTeam1 = PlayerId % 2 == 0;
+        pn.CmdAddScore(isTeam1, 1);
+        _hp = _maxHp;
+        RefreshHp();
+        attackAble = false;
+        SpawnRagdoll();
+        MoveTo(GameObject.FindGameObjectWithTag("Prison").transform.position);
+        Invoke("Spawn", 3.0f);
+    }
+
+    public void SpawnRagdoll()
+    {
+        GameObject ragdoll = Instantiate(_pc.RagDoll, transform.position, transform.rotation);
+        CopyTransform(transform.Find("Model"), ragdoll.transform);
+        NetworkServer.Spawn(ragdoll);
+        Destroy(ragdoll, 3.0f);
+    }
+    
+    void CopyTransform(Transform source, Transform target)
+    {
+        target.position = source.position;
+        target.rotation = source.rotation;
+        target.localScale = source.localScale;
+        if (source.childCount == 0) return;
+        else
+        {
+            for (int i = 0; i < source.childCount; ++i)
+            {
+                CopyTransform(source.GetChild(i), target.GetChild(i));
+            }
+        }
+    }
+
+
+    [Server]
+    public void MoveTo(Vector3 newPosition)
+    { //call this on the server
+        transform.position = newPosition; //so the player moves also in the server
+        RpcMoveTo(transform.position);
+    }
+    [ClientRpc]
+    void RpcMoveTo(Vector3 newPosition)
+    {
+        transform.position = newPosition; //this will run in all clients
+    }
+
+    public void Spawn()
+    {
+        attackAble = true;
+        MoveTo(GameObject.FindGameObjectWithTag("Spawn" + (((PlayerId + 1) % 2) + 1)).transform.position);
+    }
+
+    [Command]
+    public void CmdAddMaxHp(int hp)
+    {
+        _maxHp += hp;
+        _hp += hp;
+        RefreshHp();
+    }
+
     // Use this for initialization
     void Start ()
     {
-        if (isServer)
-        {
-            _playerId = GameObject.FindGameObjectsWithTag("Player").Length;
-        }
+        _pc = GetComponent<PlayerConstant>();
+        pn = GetComponent<PlayerNetwork>();
         if (isLocalPlayer)
         {
             FindObjectOfType<NetworkUISystem>().localPlayer = this;
@@ -56,9 +148,4 @@ public class PlayerMain : NetworkBehaviour {
             if (_moneyText == null) Debug.LogError("Cant get money text");
         }
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

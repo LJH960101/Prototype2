@@ -15,6 +15,7 @@ public class Spawner : NetworkBehaviour
     Transform pos1;
     [SerializeField]
     Transform pos2;
+    public bool onSpawn = false;
 
     float spawnTimer;
     // Use this for initialization
@@ -24,6 +25,7 @@ public class Spawner : NetworkBehaviour
 	
 	// Update is called once per frame
 	void Update () {
+        if (!onSpawn) return;
         spawnTimer -= Time.deltaTime;
 		if(spawnTimer <= 0f)
         {

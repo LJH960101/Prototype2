@@ -11,6 +11,12 @@ TagManager:
   - NetworkUIManager
   - Money
   - Portal
+  - Collide
+  - Floor
+  - Spawn1
+  - Spawn2
+  - Prison
+  - Spawner
   layers:
   - Default
   - TransparentFX

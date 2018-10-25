@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class BulletMain : NetworkBehaviour {
+    public int damage = 10;
+    public int forcePower = 100;
     [SyncVar]
     int _bulletTargetPlayer = -1;
     public int BulletTargetPlayer
@@ -46,6 +48,26 @@ public class BulletMain : NetworkBehaviour {
                 transform.GetComponent<Rigidbody>().velocity = initVelocity;
                 onLerp = false;
             }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!isServer) return;
+        if (other.transform.tag == "Player")
+        {
+            if (BulletTargetPlayer%2 == other.gameObject.GetComponent<PlayerMain>().PlayerId%2)
+            {
+                return;
+            }
+            Vector3 bulletForce = (other.transform.position - transform.position).normalized * damage * forcePower;
+            other.gameObject.GetComponent<PlayerMain>().CmdGetDamage(damage);
+            other.gameObject.GetComponent<Rigidbody>().AddForce(bulletForce);
+            Destroy(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
         }
     }
 }

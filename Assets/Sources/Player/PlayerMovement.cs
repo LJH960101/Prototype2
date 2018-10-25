@@ -25,9 +25,9 @@ public class PlayerMovement : NetworkBehaviour
             return;
 
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) Jump();
-        if (Input.GetKeyDown(KeyCode.F1)) _pn.CmdAddScore(true, 1);
+        /*if (Input.GetKeyDown(KeyCode.F1)) _pn.CmdAddScore(true, 1);
         if (Input.GetKeyDown(KeyCode.F2)) _pn.CmdAddScore(false, 1);
-        if (Input.GetKeyDown(KeyCode.F3)) GetComponent<PlayerMain>().CmdAddMoney(10);
+        if (Input.GetKeyDown(KeyCode.F3)) GetComponent<PlayerMain>().CmdAddMoney(10);*/
     }
 
     private void FixedUpdate()

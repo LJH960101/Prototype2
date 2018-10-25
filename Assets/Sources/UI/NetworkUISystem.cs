@@ -38,8 +38,14 @@ public class NetworkUISystem : NetworkBehaviour
     public void OnStartButton()
     {
         um.ChangeScreen(UIManager.UIState.INGAME);
+        FindObjectOfType<Spawner>().onSpawn = true;
         RpcOnStartButton();
         _timer = 60f;
+        var players = FindObjectsOfType<PlayerMain>();
+        foreach(var player in players)
+        {
+            player.Spawn();
+        }
     }
     void UpdateScores1(int score)
     {
