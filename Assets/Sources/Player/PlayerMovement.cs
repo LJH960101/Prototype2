@@ -7,16 +7,16 @@ public class PlayerMovement : NetworkBehaviour
 {
     PlayerConstant _pc;
     PlayerNetwork _pn;
-    Rigidbody2D _rb2d;
+    Rigidbody _rb;
     private void Start()
     {
-        _rb2d = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody>();
         _pc = GetComponent<PlayerConstant>();
         _pn = GetComponent<PlayerNetwork>();
     }
     void Jump()
     {
-        _rb2d.AddForce(new Vector2(0f, _pc.JumpPower));
+        _rb.AddForce(new Vector2(0f, _pc.JumpPower));
     }
     // Update is called once per frame
     void Update ()
@@ -37,6 +37,10 @@ public class PlayerMovement : NetworkBehaviour
 
         var x = Input.GetAxis("Horizontal") * 1f * _pc.Speed;
 
-        _rb2d.velocity = new Vector2(x, _rb2d.velocity.y);
+        _rb.velocity = new Vector2(x, _rb.velocity.y);
+        if(transform.position.x <= -45 || transform.position.x >= 45)
+        {
+            transform.position = GameObject.FindGameObjectWithTag("Portal").transform.position;
+        }
     }
 }

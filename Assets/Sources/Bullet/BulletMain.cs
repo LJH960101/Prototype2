@@ -22,10 +22,10 @@ public class BulletMain : NetworkBehaviour {
 	// Use this for initialization
 	void Start () {
         realPos = transform.position;
-        initVelocity = transform.GetComponent<Rigidbody2D>().velocity;
+        initVelocity = transform.GetComponent<Rigidbody>().velocity;
         initPos = MyTool.GetPlayerGameObject(_bulletTargetPlayer).transform.position;
         transform.position = initPos;
-        transform.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        transform.GetComponent<Rigidbody>().velocity = Vector2.zero;
         targetPos = realPos + initVelocity * lerpTime;
         onLerp = true;
         lerpCounter = 0.0f;
@@ -43,7 +43,7 @@ public class BulletMain : NetworkBehaviour {
             if (lerpCounter >= lerpTime)
             {
                 transform.position = realPos;
-                transform.GetComponent<Rigidbody2D>().velocity = initVelocity;
+                transform.GetComponent<Rigidbody>().velocity = initVelocity;
                 onLerp = false;
             }
         }

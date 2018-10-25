@@ -35,7 +35,7 @@ public class PlayerShooter : NetworkBehaviour
         var bulletObj = Instantiate(_pc.Bullet);
         bulletObj.transform.position = startPos;
         bulletObj.GetComponent<BulletMain>().BulletTargetPlayer = playerId;
-        bulletObj.GetComponent<Rigidbody2D>().velocity = shootForce * _pc.ShootPower;
+        bulletObj.GetComponent<Rigidbody>().velocity = shootForce * _pc.ShootPower;
         NetworkServer.Spawn(bulletObj);
         Destroy(bulletObj, 2.0f);
     }

@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour {
         MAX
     };
     UIState currentState;
+    public UIState State { get { return currentState; } }
     public GameObject inGameUI, lobbyUi;
     NetworkManagerHUD networkHUD;
     [HideInInspector]

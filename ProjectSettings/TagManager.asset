@@ -9,6 +9,8 @@ TagManager:
   - NetworkManager
   - UIManager
   - NetworkUIManager
+  - Money
+  - Portal
   layers:
   - Default
   - TransparentFX
