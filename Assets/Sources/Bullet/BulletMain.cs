@@ -60,7 +60,8 @@ public class BulletMain : NetworkBehaviour {
             {
                 return;
             }
-            Vector3 bulletForce = initVelocity.normalized * damage * forcePower;
+            Vector3 bulletForce = initVelocity.normalized * damage/2f * forcePower;
+            bulletForce.y = bulletForce.y * 0.01f;
             other.gameObject.GetComponent<PlayerMain>().CmdGetDamage(damage);
             other.gameObject.GetComponent<Rigidbody>().AddForce(bulletForce);
             Destroy(gameObject);

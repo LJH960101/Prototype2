@@ -57,7 +57,7 @@ public class Monster : NetworkBehaviour
         _hp -= damage;
         if (_hp <= 0)
         {
-            MyTool.GetPlayerGameObject(bulletShooterCode).GetComponent<PlayerMain>().CmdAddMoney(_rewordMoney);
+            MyTool.GetPlayerGameObject(bulletShooterCode).GetComponent<PlayerNetwork>().CmdAddScore(bulletShooterCode%2==1, 800);
             Destroy(gameObject);
         }
         else RefreshHp();

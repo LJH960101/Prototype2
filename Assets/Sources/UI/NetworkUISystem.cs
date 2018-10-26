@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 public class NetworkUISystem : NetworkBehaviour
 {
     UIManager um;
+    public UIManager UM { get { return um; } }
     UnityEngine.UI.Text score1Text, score2Text, timerText;
     public PlayerMain localPlayer;
     [SyncVar(hook = "UpdateScores1")]
@@ -28,6 +29,39 @@ public class NetworkUISystem : NetworkBehaviour
         {
             _timer -= Time.deltaTime;
             UpdateTimerUI();
+            if (_timer <= 0.0f && um.State == UIManager.UIState.INGAME)
+            {
+                _timer = 0.0f;
+                GameEnd();
+            }
+        }
+    }
+    void GameEnd()
+    {
+        um.ChangeScreen(UIManager.UIState.LOBBY);
+        FindObjectOfType<Spawner>().onSpawn = false;
+        RpcOnBackToLobby();
+        ShowWinnerPanel();
+        _timer = 0f;
+        var players = FindObjectsOfType<PlayerMain>();
+        foreach (var player in players)
+        {
+            player.CmdGoToPrison();
+        }
+        var bullets = FindObjectsOfType<BulletMain>();
+        foreach (var bullet in bullets)
+        {
+            Destroy(bullet.gameObject);
+        }
+        var monsters = FindObjectsOfType<Monster>();
+        foreach (var monster in monsters)
+        {
+            Destroy(monster.gameObject);
+        }
+        var moneys = FindObjectsOfType<Money>();
+        foreach (var money in moneys)
+        {
+            Destroy(money.gameObject);
         }
     }
     [ClientRpc]
@@ -35,12 +69,25 @@ public class NetworkUISystem : NetworkBehaviour
     {
         um.ChangeScreen(UIManager.UIState.INGAME);
     }
+    [ClientRpc]
+    public void RpcOnBackToLobby()
+    {
+        ShowWinnerPanel();
+        um.ChangeScreen(UIManager.UIState.LOBBY);
+    }
+    void ShowWinnerPanel()
+    {
+        if (score1 > score2) WinnerPanel.GetInstance().SetWinner(1);
+        else if (score1 < score2) WinnerPanel.GetInstance().SetWinner(2);
+        else WinnerPanel.GetInstance().SetWinner(0);
+        WinnerPanel.GetInstance().Show();
+    }
     public void OnStartButton()
     {
         um.ChangeScreen(UIManager.UIState.INGAME);
         FindObjectOfType<Spawner>().onSpawn = true;
         RpcOnStartButton();
-        _timer = 60f;
+        _timer = 20f;
         var players = FindObjectsOfType<PlayerMain>();
         foreach(var player in players)
         {
@@ -76,7 +123,7 @@ public class NetworkUISystem : NetworkBehaviour
     }
     void UpdateTimerUI()
     {
-        timerText.text = _timer + "";
+        timerText.text = (int)_timer + "";
     }
     private static NetworkUISystem instance;
     public static NetworkUISystem GetInstance()

@@ -13,4 +13,36 @@ class MyTool
         }
         return null;
     }
+
+    static Stuff GetStuffObject(int stuffNumb, GameObject[] objects)
+    {
+        foreach (var stuffObject in objects)
+            if (stuffObject.transform.name == "Stuff" + stuffNumb) return stuffObject.GetComponent<Stuff>();
+        return null;
+    }
+    public static Stuff GetStuff(Stuff.StuffType type)
+    {
+        var objects = GameObject.FindGameObjectsWithTag("Stuff");
+        switch (type)
+        {
+            case Stuff.StuffType.POWER:
+                return GetStuffObject(1, objects);
+            case Stuff.StuffType.HP:
+                return GetStuffObject(2, objects);
+            case Stuff.StuffType.BOMB:
+                return GetStuffObject(3, objects);
+            case Stuff.StuffType.SPEED:
+                return GetStuffObject(4, objects);
+            case Stuff.StuffType.ATTACK_SPEED:
+                return GetStuffObject(5, objects);
+            default:
+                Debug.LogError("Wrong stuff code.");
+                return null;
+        }
+    }
+    public static Stuff GetStuff(int stuffType)
+    {
+        var objects = GameObject.FindGameObjectsWithTag("Stuff");
+        return GetStuffObject(stuffType, objects);
+    }
 }

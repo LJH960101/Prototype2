@@ -1840,10 +1840,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed20d0e5de7284f4f848ae900f378aab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shootPower: 20
-  _speed: 10
+  Speed: 10
+  ShootDelay: 0.2
+  Damage: 10
+  _itemTime: 10
+  _itemDamage: 5
+  _itemSpeed: 7
+  _itemAttackSpeed: 0.1
+  _itemHp: 50
+  _shootPower: 30
   _jumpPower: 500
   _bullet: {fileID: 1776541096134414, guid: f3d7f40e60d5da64d8bc59e2d80e7e17, type: 2}
+  _bomb: {fileID: 1937433905941432, guid: 55706c43c9d958848b2bb26238dba5ef, type: 2}
   _hpBar: {fileID: 4723401123805986}
   _ragdoll: {fileID: 1601404543146048, guid: fc29104da8339944d8380329a9247cd2, type: 2}
 --- !u!114 &114961011515303650

@@ -9,6 +9,7 @@ public class PlayerShooter : NetworkBehaviour
     PlayerConstant _pc;
     PlayerAnimation _pa;
     PlayerMain _pm;
+    float shootTimer = 0.0f;
     // Use this for initialization
     void Start () {
         _aimObj = GameObject.FindGameObjectWithTag("Aim");
@@ -16,20 +17,24 @@ public class PlayerShooter : NetworkBehaviour
         _pm = GetComponent<PlayerMain>();
         _pa = transform.Find("Model").GetComponent<PlayerAnimation>();
 	}
-	
+    bool onMouseDown = false;
 	// Update is called once per frame
 	void Update () {
         if (!isLocalPlayer) return;
-        if(_aimObj == null) _aimObj = GameObject.FindGameObjectWithTag("Aim");
+        shootTimer -= Time.deltaTime;
+        if (Input.GetMouseButtonDown(0)) onMouseDown = true;
+        if (Input.GetMouseButtonUp(0)) onMouseDown = false;
+        if (_aimObj == null) _aimObj = GameObject.FindGameObjectWithTag("Aim");
         if(_aimObj != null)
         {
-            if (Input.GetMouseButtonDown(0) && _pm.attackAble)
+            if (onMouseDown && _pm.attackAble && shootTimer <= 0.0f)
             {
                 Vector3 shootVec3D = (_aimObj.transform.position - transform.position);
                 shootVec3D.z = 0f;
                 Vector2 shootVec = shootVec3D.normalized;
                 CmdShoot(GetComponent<PlayerMain>().PlayerId, shootVec, transform.position);
                 _pa.RunShootAnimation();
+                shootTimer = _pc.ShootDelay;
             }
         }
 	}
@@ -42,8 +47,9 @@ public class PlayerShooter : NetworkBehaviour
         bulletObj.transform.position = startPos;
         bulletObj.GetComponent<BulletMain>().BulletTargetPlayer = playerId;
         bulletObj.GetComponent<Rigidbody>().velocity = shootForce * _pc.ShootPower;
+        bulletObj.GetComponent<BulletMain>().damage = _pc.Damage;
         NetworkServer.Spawn(bulletObj);
-        Destroy(bulletObj, 2.0f);
+        Destroy(bulletObj, 4.0f);
     }
 
     [ClientRpc]

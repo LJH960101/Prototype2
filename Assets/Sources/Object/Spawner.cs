@@ -27,7 +27,7 @@ public class Spawner : NetworkBehaviour
     float monsterSpawnTimer;
     // Use this for initialization
     void Start () {
-        moneySpawnTimer = monsterSpawnGab;
+        moneySpawnTimer = 0;
         monsterSpawnTimer = monsterSpawnDelay;
 
     }

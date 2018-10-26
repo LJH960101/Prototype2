@@ -18,6 +18,7 @@ TagManager:
   - Prison
   - Spawner
   - Monster
+  - Stuff
   layers:
   - Default
   - TransparentFX

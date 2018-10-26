@@ -38,15 +38,18 @@ public class UIManager : MonoBehaviour {
             case UIState.MAIN_MENU:
                 networkHUD.showGUI = true;
                 GetComponent<MainMenuUI>().enabled = true;
+                Cursor.visible = true;
                 break;
             case UIState.LOBBY:
                 GetComponent<LobbyUI>().enabled = true;
                 GetComponent<LobbyUI>().Enter();
                 lobbyUi.SetActive(true);
+                Cursor.visible = true;
                 break;
             case UIState.INGAME:
                 GetComponent<InGameUI>().enabled = true;
                 inGameUI.SetActive(true);
+                Cursor.visible = false;
                 break;
             default:
                 Debug.LogError("Unkown State");

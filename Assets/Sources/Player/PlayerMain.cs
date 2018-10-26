@@ -67,6 +67,14 @@ public class PlayerMain : NetworkBehaviour {
     }
 
     [Command]
+    public void CmdAddMaxHp()
+    {
+        _maxHp += _pc.ItemHp;
+        _hp += _pc.ItemHp;
+        RefreshHp();
+    }
+
+    [Command]
     public void CmdGetDamage(int damage)
     {
         if (!hitable) return;
@@ -81,14 +89,19 @@ public class PlayerMain : NetworkBehaviour {
         if (!hitable) return;
         hitable = false;
         bool isTeam1 = PlayerId % 2 == 0;
-        pn.CmdAddScore(isTeam1, 1);
+        pn.CmdAddScore(isTeam1, 100);
         _hp = _maxHp;
         RefreshHp();
-        attackAble = false;
         RpcSpawnRagdoll();
         SpawnRagdoll();
-        CmdMoveTo(GameObject.FindGameObjectWithTag("Prison").transform.position);
+        CmdGoToPrison();
         Invoke("Spawn", 3.0f);
+    }
+    [Command]
+    public void CmdGoToPrison()
+    {
+        attackAble = false;
+        CmdMoveTo(GameObject.FindGameObjectWithTag("Prison").transform.position);
     }
     [ClientRpc]
     public void RpcSpawnRagdoll()
@@ -131,6 +144,7 @@ public class PlayerMain : NetworkBehaviour {
 
     public void Spawn()
     {
+        if (NetworkUISystem.GetInstance().UM.State != UIManager.UIState.INGAME) return;
         attackAble = true;
         CmdMoveTo(GameObject.FindGameObjectWithTag("Spawn" + (((PlayerId + 1) % 2) + 1)).transform.position);
         hitable = false;
@@ -140,14 +154,6 @@ public class PlayerMain : NetworkBehaviour {
     void SetHittable()
     {
         hitable = true;
-    }
-
-    [Command]
-    public void CmdAddMaxHp(int hp)
-    {
-        _maxHp += hp;
-        _hp += hp;
-        RefreshHp();
     }
 
     // Use this for initialization

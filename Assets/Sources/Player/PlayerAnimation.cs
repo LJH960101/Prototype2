@@ -8,6 +8,7 @@ public class PlayerAnimation : MonoBehaviour {
     PlayerConstant _pc;
     Transform _model;
     bool onJump;
+    public bool OnJump { get { return onJump; } }
     float distToGround;
     // Use this for initialization
     void Start () {
