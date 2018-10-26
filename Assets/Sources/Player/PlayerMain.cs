@@ -8,13 +8,14 @@ public class PlayerMain : NetworkBehaviour {
     PlayerNetwork pn;
     GameObject _myAim = null;
     UnityEngine.UI.Text _moneyText;
+    bool hitable = true;
     [SyncVar]
     public int _playerId = -1;
     [SyncVar(hook ="OnMoneyChange")]
     int _money = 0;
-    [SyncVar(hook = "OnMaxH_pchange")]
+    [SyncVar(hook = "OnMaxHpChange")]
     public int _maxHp = 100;
-    [SyncVar(hook = "OnH_pchange")]
+    [SyncVar(hook = "OnHpChange")]
     int _hp = 100;
     [SyncVar]
     public bool attackAble = true;
@@ -34,12 +35,12 @@ public class PlayerMain : NetworkBehaviour {
         _pc.HpBar.localScale = new Vector3((float)_hp / (float)_maxHp, 1.0f, 1.0f);
         _pc.HpBar.localPosition = new Vector3( - (1.0f - ((float)_hp / (float)_maxHp)), 0.0f, -1.0f);
     }
-    void OnMaxH_pchange(int maxHp)
+    void OnMaxHpChange(int maxHp)
     {
         if (!isServer) _maxHp = maxHp;
         RefreshHp();
     }
-    void OnH_pchange(int hp)
+    void OnHpChange(int hp)
     {
         if (!isServer) _hp = hp;
         RefreshHp();
@@ -68,6 +69,7 @@ public class PlayerMain : NetworkBehaviour {
     [Command]
     public void CmdGetDamage(int damage)
     {
+        if (!hitable) return;
         _hp -= damage;
         if (_hp <= 0) CmdDie();
         else RefreshHp();
@@ -76,24 +78,30 @@ public class PlayerMain : NetworkBehaviour {
     [Command]
     public void CmdDie()
     {
+        if (!hitable) return;
+        hitable = false;
         bool isTeam1 = PlayerId % 2 == 0;
         pn.CmdAddScore(isTeam1, 1);
         _hp = _maxHp;
         RefreshHp();
         attackAble = false;
+        RpcSpawnRagdoll();
         SpawnRagdoll();
-        MoveTo(GameObject.FindGameObjectWithTag("Prison").transform.position);
+        CmdMoveTo(GameObject.FindGameObjectWithTag("Prison").transform.position);
         Invoke("Spawn", 3.0f);
     }
-
-    public void SpawnRagdoll()
+    [ClientRpc]
+    public void RpcSpawnRagdoll()
+    {
+        SpawnRagdoll();
+    }
+    void SpawnRagdoll()
     {
         GameObject ragdoll = Instantiate(_pc.RagDoll, transform.position, transform.rotation);
         CopyTransform(transform.Find("Model"), ragdoll.transform);
-        NetworkServer.Spawn(ragdoll);
         Destroy(ragdoll, 3.0f);
     }
-    
+
     void CopyTransform(Transform source, Transform target)
     {
         target.position = source.position;
@@ -109,9 +117,8 @@ public class PlayerMain : NetworkBehaviour {
         }
     }
 
-
-    [Server]
-    public void MoveTo(Vector3 newPosition)
+    [Command]
+    public void CmdMoveTo(Vector3 newPosition)
     { //call this on the server
         transform.position = newPosition; //so the player moves also in the server
         RpcMoveTo(transform.position);
@@ -125,7 +132,14 @@ public class PlayerMain : NetworkBehaviour {
     public void Spawn()
     {
         attackAble = true;
-        MoveTo(GameObject.FindGameObjectWithTag("Spawn" + (((PlayerId + 1) % 2) + 1)).transform.position);
+        CmdMoveTo(GameObject.FindGameObjectWithTag("Spawn" + (((PlayerId + 1) % 2) + 1)).transform.position);
+        hitable = false;
+        Invoke("SetHittable", 2f);
+    }
+
+    void SetHittable()
+    {
+        hitable = true;
     }
 
     [Command]

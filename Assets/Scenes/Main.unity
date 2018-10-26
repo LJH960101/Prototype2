@@ -152,6 +152,16 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 114315225263318268, guid: efe1097363e48e14dbc8043933c27d60,
+        type: 2}
+      propertyPath: monsterSpawnDelay
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 114315225263318268, guid: efe1097363e48e14dbc8043933c27d60,
+        type: 2}
+      propertyPath: monsterSpawnGab
+      value: 30
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: efe1097363e48e14dbc8043933c27d60, type: 2}
   m_IsPrefabAsset: 0
@@ -363,7 +373,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 328625534}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 48.24, z: 2.86}
+  m_LocalPosition: {x: 0, y: 114.3, z: 2.86}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 687205485}
@@ -1181,7 +1191,7 @@ MonoBehaviour:
   m_SpawnPrefabs:
   - {fileID: 1776541096134414, guid: f3d7f40e60d5da64d8bc59e2d80e7e17, type: 2}
   - {fileID: 1988721414906952, guid: d846160ef013ca344a6cfdf4db8911de, type: 2}
-  - {fileID: 1601404543146048, guid: fc29104da8339944d8380329a9247cd2, type: 2}
+  - {fileID: 1891666866596042, guid: 5dd592fbf09bb3f42b6290039c09a2d8, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:

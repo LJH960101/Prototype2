@@ -17,6 +17,7 @@ TagManager:
   - Spawn2
   - Prison
   - Spawner
+  - Monster
   layers:
   - Default
   - TransparentFX
@@ -26,9 +27,9 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
+  - Player
+  - Bullet
+  - Money
   - 
   - 
   - 

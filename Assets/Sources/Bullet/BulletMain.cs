@@ -56,15 +56,23 @@ public class BulletMain : NetworkBehaviour {
         if (!isServer) return;
         if (other.transform.tag == "Player")
         {
-            if (BulletTargetPlayer%2 == other.gameObject.GetComponent<PlayerMain>().PlayerId%2)
+            if (BulletTargetPlayer % 2 == other.gameObject.GetComponent<PlayerMain>().PlayerId % 2)
             {
                 return;
             }
-            Vector3 bulletForce = (other.transform.position - transform.position).normalized * damage * forcePower;
+            Vector3 bulletForce = initVelocity.normalized * damage * forcePower;
             other.gameObject.GetComponent<PlayerMain>().CmdGetDamage(damage);
             other.gameObject.GetComponent<Rigidbody>().AddForce(bulletForce);
             Destroy(gameObject);
         }
+        else if (other.transform.tag == "Monster")
+        {
+            Vector3 bulletForce = initVelocity.normalized * damage * forcePower;
+            other.gameObject.GetComponent<Monster>().GetDamage(damage, _bulletTargetPlayer);
+            other.gameObject.GetComponent<Rigidbody>().AddForce(bulletForce);
+            Destroy(gameObject);
+        }
+        else if (other.transform.tag == "Bullet") return;
         else
         {
             Destroy(gameObject);

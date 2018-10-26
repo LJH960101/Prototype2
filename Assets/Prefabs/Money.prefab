@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 114574502748449688}
   - component: {fileID: 54339541288942622}
   - component: {fileID: 114828343605436720}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Money
   m_TagString: Money
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ Transform:
   m_GameObject: {fileID: 1988721414906952}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.25545, y: 1.2752203, z: 0}
-  m_LocalScale: {x: 4.725463, y: 4.725463, z: 4.725463}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
