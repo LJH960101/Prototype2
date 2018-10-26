@@ -10,6 +10,7 @@ public class PlayerShooter : NetworkBehaviour
     PlayerAnimation _pa;
     PlayerMain _pm;
     float shootTimer = 0.0f;
+    int _shootCount = 0;
     // Use this for initialization
     void Start () {
         _aimObj = GameObject.FindGameObjectWithTag("Aim");
@@ -32,28 +33,49 @@ public class PlayerShooter : NetworkBehaviour
                 Vector3 shootVec3D = (_aimObj.transform.position - transform.position);
                 shootVec3D.z = 0f;
                 Vector2 shootVec = shootVec3D.normalized;
-                CmdShoot(GetComponent<PlayerMain>().PlayerId, shootVec, transform.position);
-                _pa.RunShootAnimation();
+                preShot(_pm.PlayerId, shootVec, transform.position);
+                CmdShoot(_pm.PlayerId, shootVec, transform.position);
                 shootTimer = _pc.ShootDelay;
             }
         }
 	}
-
+    void preShot(int playerId, Vector2 shootForce, Vector3 startPos)
+    {
+        _pa.RunShootAnimation();
+        var bulletObj = Instantiate(_pc.Bullet);
+        bulletObj.transform.position = startPos;
+        bulletObj.GetComponent<BulletMain>().BulletTargetPlayer = playerId;
+        bulletObj.GetComponent<Rigidbody>().velocity = shootForce * _pc.ShootPower * 0.8f;
+        bulletObj.GetComponent<BulletMain>().damage = 0;
+        Destroy(bulletObj, 10.0f);
+    }
     [Command]
     void CmdShoot(int playerId, Vector2 shootForce, Vector3 startPos)
     {
-        RpcShoot();
-        var bulletObj = Instantiate(_pc.Bullet);
+        var bulletObj = Instantiate(_pc.FakeBullet);
         bulletObj.transform.position = startPos;
         bulletObj.GetComponent<BulletMain>().BulletTargetPlayer = playerId;
         bulletObj.GetComponent<Rigidbody>().velocity = shootForce * _pc.ShootPower;
         bulletObj.GetComponent<BulletMain>().damage = _pc.Damage;
         NetworkServer.Spawn(bulletObj);
-        Destroy(bulletObj, 4.0f);
+        Destroy(bulletObj, 10.0f);
+        RpcShoot(playerId, shootForce, startPos);
+    }
+    [ClientRpc]
+    void RpcShoot(int playerId, Vector2 shootForce, Vector3 startPos)
+    {
+        _pa.RunShootAnimation();
+        if (playerId == _pm.PlayerId) return;
+        var bulletObj = Instantiate(_pc.Bullet);
+        bulletObj.transform.position = startPos;
+        bulletObj.GetComponent<BulletMain>().BulletTargetPlayer = playerId;
+        bulletObj.GetComponent<Rigidbody>().velocity = shootForce * _pc.ShootPower;
+        bulletObj.GetComponent<BulletMain>().damage = 0;
+        Destroy(bulletObj, 10.0f);
     }
 
     [ClientRpc]
-    void RpcShoot()
+    void RpcShootAnim()
     {
         _pa.RunShootAnimation();
     }

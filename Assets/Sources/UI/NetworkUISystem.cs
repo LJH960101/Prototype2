@@ -15,6 +15,7 @@ public class NetworkUISystem : NetworkBehaviour
     int score2;
     [SyncVar(hook = "UpdateTimer")]
     float _timer;
+    float gameTime = 50f;
 
     private void Start()
     {
@@ -87,7 +88,7 @@ public class NetworkUISystem : NetworkBehaviour
         um.ChangeScreen(UIManager.UIState.INGAME);
         FindObjectOfType<Spawner>().onSpawn = true;
         RpcOnStartButton();
-        _timer = 20f;
+        _timer = gameTime;
         var players = FindObjectsOfType<PlayerMain>();
         foreach(var player in players)
         {

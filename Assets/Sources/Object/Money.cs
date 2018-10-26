@@ -13,7 +13,7 @@ public class Money : NetworkBehaviour
         if (UnityEngine.Random.Range(0, 10) == 1)
         {
             isBig = true;
-            transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
+            transform.localScale = new Vector3(transform.localScale.x * 2f, transform.localScale.y * 2f, transform.localScale.z * 2f);
         }
         else isBig = false;
     }

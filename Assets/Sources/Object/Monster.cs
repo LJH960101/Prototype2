@@ -15,7 +15,7 @@ public class Monster : NetworkBehaviour
     SpriteRenderer _sr;
     [SyncVar(hook = "OnFlip")]
     bool onFlip = false;
-
+    Rigidbody _rb;
     void OnFlip(bool flip)
     {
         if (!isServer) onFlip = flip;
@@ -37,7 +37,7 @@ public class Monster : NetworkBehaviour
     void RefreshHp()
     {
         hpBar.localScale = new Vector3((float)_hp / (float)_maxHp, 1.0f, 1.0f);
-        hpBar.localPosition = new Vector3(-(1.0f - ((float)_hp / (float)_maxHp)), 0.0f, -1.0f);
+        hpBar.localPosition = new Vector3(-(1.0f - ((float)_hp / (float)_maxHp)), 0.0f, 0.0f);
     }
 
     List<Transform> playerTransforms;
@@ -48,6 +48,7 @@ public class Monster : NetworkBehaviour
         var players = GameObject.FindObjectsOfType<PlayerMain>();
         foreach (var player in players) playerTransforms.Add(player.transform);
         _hp = _maxHp;
+        _rb = GetComponent<Rigidbody>();
         RefreshHp();
     }
 
@@ -67,20 +68,12 @@ public class Monster : NetworkBehaviour
 	void Update () {
         if (!isServer) return;
 
-        if (targetTransform != null)
-        {
-            if (transform.position.x <= targetTransform.position.x) onFlip = false;
-            else onFlip = true;
-            ChangeFlipState();
-            transform.position = Vector3.MoveTowards(transform.position, targetTransform.position, speed);
-        }
-
         Transform minTransform = null;
         float minDist = float.MaxValue;
         foreach (var playerTransform in playerTransforms)
         {
             float dist = Vector3.Distance(transform.position, playerTransform.position);
-            if (dist < minDist && dist < 40f)
+            if (dist < minDist && dist < 80f)
             {
                 minDist = dist;
                 minTransform = playerTransform;
@@ -88,14 +81,24 @@ public class Monster : NetworkBehaviour
         }
         targetTransform = minTransform;
 
+        if (targetTransform != null)
+        {
+            if (transform.position.x <= targetTransform.position.x) onFlip = false;
+            else onFlip = true;
+            ChangeFlipState();
+            Vector3 newVec = (targetTransform.position - transform.position).normalized * speed;
+            newVec.z = 0.0f;
+            _rb.velocity = newVec;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!isServer) return;
         if(other.transform.tag == "Player")
         {
-            other.GetComponent<PlayerMain>().CmdDie();
+            var playerMain = other.GetComponent<PlayerMain>();
+            if (playerMain.isLocalPlayer)
+                playerMain.CmdDie();
         }
     }
 }

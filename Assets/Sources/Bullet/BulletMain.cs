@@ -53,7 +53,12 @@ public class BulletMain : NetworkBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!isServer) return;
+        if (!isServer)
+        {
+            if (other.transform.tag == "Bullet") return;
+            else if (other.transform.tag == "Player" && BulletTargetPlayer % 2 == other.gameObject.GetComponent<PlayerMain>().PlayerId % 2) return;
+            else Destroy(gameObject);
+        }
         if (other.transform.tag == "Player")
         {
             if (BulletTargetPlayer % 2 == other.gameObject.GetComponent<PlayerMain>().PlayerId % 2)

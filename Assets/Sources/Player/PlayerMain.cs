@@ -33,7 +33,7 @@ public class PlayerMain : NetworkBehaviour {
     void RefreshHp()
     {
         _pc.HpBar.localScale = new Vector3((float)_hp / (float)_maxHp, 1.0f, 1.0f);
-        _pc.HpBar.localPosition = new Vector3( - (1.0f - ((float)_hp / (float)_maxHp)), 0.0f, -1.0f);
+        _pc.HpBar.localPosition = new Vector3( - (1.0f - ((float)_hp / (float)_maxHp)), 0.0f, 0.0f);
     }
     void OnMaxHpChange(int maxHp)
     {

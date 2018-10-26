@@ -148,8 +148,8 @@ GameObject:
   - component: {fileID: 114660417427490566}
   - component: {fileID: 114012970845228522}
   - component: {fileID: 54948481963069254}
-  - component: {fileID: 136357916408635862}
-  - component: {fileID: 136424907169874168}
+  - component: {fileID: 65038083555844138}
+  - component: {fileID: 65414260121437728}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -1038,7 +1038,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1173086424484364}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.1273384, y: 6.1564198, z: 0}
+  m_LocalPosition: {x: -11.775133, y: 6.4352655, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4981719737559180}
@@ -1403,7 +1403,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1927562357151010}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4782656675470102}
@@ -1732,6 +1732,30 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
+--- !u!65 &65038083555844138
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1173086424484364}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.1, y: 3.1, z: 20}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &65414260121437728
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1173086424484364}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 3, z: 20}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &95781124293911456
 Animator:
   serializedVersion: 3
@@ -1841,16 +1865,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 10
-  ShootDelay: 0.2
+  ShootDelay: 0.4
   Damage: 10
   _itemTime: 10
   _itemDamage: 5
   _itemSpeed: 7
-  _itemAttackSpeed: 0.1
+  _itemAttackSpeed: 0.2
   _itemHp: 50
-  _shootPower: 30
-  _jumpPower: 500
+  _shootPower: 20
+  _jumpPower: 1000
   _bullet: {fileID: 1776541096134414, guid: f3d7f40e60d5da64d8bc59e2d80e7e17, type: 2}
+  _fakeBullet: {fileID: 1776541096134414, guid: 9578137430a39ba4b8f346b52b57255e,
+    type: 2}
   _bomb: {fileID: 1937433905941432, guid: 55706c43c9d958848b2bb26238dba5ef, type: 2}
   _hpBar: {fileID: 4723401123805986}
   _ragdoll: {fileID: 1601404543146048, guid: fc29104da8339944d8380329a9247cd2, type: 2}
@@ -1897,32 +1923,6 @@ MonoBehaviour:
     i15: 143
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
---- !u!136 &136357916408635862
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1173086424484364}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 3
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!136 &136424907169874168
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1173086424484364}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.6
-  m_Height: 3.1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!137 &137780325929391312
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
@@ -2057,7 +2057,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: ed049c7a3ddfc464299f32cad7fdb136, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0

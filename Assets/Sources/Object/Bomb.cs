@@ -8,21 +8,21 @@ public class Bomb : NetworkBehaviour {
     [SerializeField]
     float speed = 35.0f;
     bool bGoRight;
-    [HideInInspector]
+    [SyncVar, HideInInspector]
     public int ownPlayerId;
 	public void InitPos()
     {
         // 왼쪽 출몰
         if (UnityEngine.Random.Range(0, 2) == 1)
         {
-            transform.position = new Vector3(-55, transform.position.y, transform.position.z);
+            transform.position = new Vector3(-55, transform.position.y, -5f);
             GetComponent<SpriteRenderer>().flipX = true;
             GetComponent<Rigidbody>().velocity = new Vector3(speed, 0.0f, 0.0f);
             bGoRight = true;
         }
         else
         {
-            transform.position = new Vector3(55, transform.position.y, transform.position.z);
+            transform.position = new Vector3(55, transform.position.y, -5f);
             GetComponent<Rigidbody>().velocity = new Vector3(-speed, 0.0f, 0.0f);
             bGoRight = false;
         }
@@ -42,15 +42,14 @@ public class Bomb : NetworkBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!isServer) return;
-        if(other.transform.tag == "Player")
+        if(other.transform.tag == "Player" && other.GetComponent<PlayerMain>().isLocalPlayer)
         {
             if(other.GetComponent<PlayerMain>().PlayerId%2 != ownPlayerId % 2)
             {
                 other.GetComponent<PlayerMain>().CmdDie();
             }
         }
-        else if(other.transform.tag == "Monster")
+        else if(other.transform.tag == "Monster" && isServer)
         {
             other.transform.GetComponent<Monster>().GetDamage(10000, ownPlayerId);
         }

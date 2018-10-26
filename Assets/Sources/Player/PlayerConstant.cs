@@ -37,6 +37,9 @@ public class PlayerConstant : NetworkBehaviour
     GameObject _bullet = null;
     public GameObject Bullet { get { return _bullet; } }
     [SerializeField]
+    GameObject _fakeBullet = null;
+    public GameObject FakeBullet { get { return _fakeBullet; } }
+    [SerializeField]
     GameObject _bomb = null;
     public GameObject Bomb { get { return _bomb; } }
     [SerializeField]

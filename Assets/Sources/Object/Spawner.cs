@@ -29,7 +29,6 @@ public class Spawner : NetworkBehaviour
     void Start () {
         moneySpawnTimer = 0;
         monsterSpawnTimer = monsterSpawnDelay;
-
     }
 	
 	// Update is called once per frame
@@ -49,6 +48,7 @@ public class Spawner : NetworkBehaviour
         if (monsterSpawnTimer <= 0f)
         {
             GameObject newMonster = Instantiate(monster, spawnPos.transform.position, spawnPos.transform.rotation);
+            newMonster.transform.position = new Vector3(newMonster.transform.position.x, newMonster.transform.position.y, -5f);
             Destroy(newMonster, 20f);
             NetworkServer.Spawn(newMonster);
 
