@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -166,6 +167,7 @@ public class PlayerMain : NetworkBehaviour {
             FindObjectOfType<NetworkUISystem>().localPlayer = this;
             _moneyText = UIManager.GetInstance().inGameUI.transform.Find("Money").GetComponent<UnityEngine.UI.Text>();
             if (_moneyText == null) Debug.LogError("Cant get money text");
+            FindObjectOfType<PlayerCamera>().SetLocalCharacter(this);
         }
     }
 }

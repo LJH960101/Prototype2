@@ -7,9 +7,18 @@ class MyTool
     public static GameObject GetPlayerGameObject(int playerId)
     {
         var players = GameObject.FindGameObjectsWithTag("Player");
-        foreach(var player in players)
+        foreach (var player in players)
         {
-            if(player.GetComponent<PlayerMain>().PlayerId == playerId) return player;
+            if (player.GetComponent<PlayerMain>().PlayerId == playerId) return player;
+        }
+        return null;
+    }
+    public static PlayerMain GetLocalPlayer()
+    {
+        var players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (var player in players)
+        {
+            if (player.GetComponent<PlayerMain>().isLocalPlayer) return player.GetComponent<PlayerMain>();
         }
         return null;
     }

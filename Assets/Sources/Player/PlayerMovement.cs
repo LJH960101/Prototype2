@@ -107,20 +107,19 @@ public class PlayerMovement : NetworkBehaviour
     [Command]
     void CmdMoveToPortal()
     {
-        transform.position = GameObject.FindGameObjectWithTag("Portal").transform.position;
+        _pm.CmdMoveTo(GameObject.FindGameObjectWithTag("Portal").transform.position);
     }
     private void FixedUpdate()
     {
+        if (isServer && (transform.position.x <= -45 || transform.position.x >= 45))
+        {
+            CmdMoveToPortal();
+        }
         if (!isLocalPlayer)
             return;
 
         var x = Input.GetAxis("Horizontal") * 1f * _pc.Speed;
 
         _rb.velocity = new Vector2(x, _rb.velocity.y);
-
-        if(transform.position.x <= -45 || transform.position.x >= 45)
-        {
-            CmdMoveToPortal();
-        }
     }
 }

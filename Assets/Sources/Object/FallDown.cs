@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class FallDown : NetworkBehaviour {
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
         if (!isServer) return;
-        if(collision.transform.tag == "Player")
+        if (other.transform.tag == "Player")
         {
-            collision.transform.GetComponent<PlayerMain>().CmdDie();
+            other.transform.GetComponent<PlayerMain>().CmdDie();
         }
     }
 }

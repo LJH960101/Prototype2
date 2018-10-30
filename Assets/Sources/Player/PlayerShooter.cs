@@ -65,13 +65,14 @@ public class PlayerShooter : NetworkBehaviour
     void RpcShoot(int playerId, Vector2 shootForce, Vector3 startPos)
     {
         _pa.RunShootAnimation();
-        if (playerId == _pm.PlayerId) return;
+        if (playerId == MyTool.GetLocalPlayer().PlayerId) return;
         var bulletObj = Instantiate(_pc.Bullet);
         bulletObj.transform.position = startPos;
         bulletObj.GetComponent<BulletMain>().BulletTargetPlayer = playerId;
         bulletObj.GetComponent<Rigidbody>().velocity = shootForce * _pc.ShootPower;
         bulletObj.GetComponent<BulletMain>().damage = 0;
         Destroy(bulletObj, 10.0f);
+        Debug.Log(3);
     }
 
     [ClientRpc]
