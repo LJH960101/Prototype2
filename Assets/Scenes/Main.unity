@@ -245,7 +245,7 @@ Prefab:
     - target: {fileID: 114315225263318268, guid: efe1097363e48e14dbc8043933c27d60,
         type: 2}
       propertyPath: monsterSpawnGab
-      value: 10
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 4548329872339092, guid: efe1097363e48e14dbc8043933c27d60, type: 2}
       propertyPath: m_LocalPosition.y
@@ -3153,6 +3153,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clampPosX: 11
+  clampPosY: 20
+  cameraSpeed: 2
 --- !u!81 &1396706801
 AudioListener:
   m_ObjectHideFlags: 0
@@ -3184,7 +3186,7 @@ Camera:
   far clip plane: 1000
   field of view: 154
   orthographic: 1
-  orthographic size: 20
+  orthographic size: 15
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

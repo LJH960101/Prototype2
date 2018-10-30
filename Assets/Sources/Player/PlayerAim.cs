@@ -5,8 +5,8 @@ using UnityEngine;
 public class PlayerAim : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
-		
-	}
+        FindObjectOfType<PlayerCamera>().SetPlayerAim(this);
+    }
 	
 	// Update is called once per frame
 	void Update()
