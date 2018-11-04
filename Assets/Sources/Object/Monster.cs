@@ -49,7 +49,13 @@ public class Monster : NetworkBehaviour
         foreach (var player in players) playerTransforms.Add(player.transform);
         _hp = _maxHp;
         _rb = GetComponent<Rigidbody>();
+        MyTool.GetLocalPlayer().AddMonster(this);
+        MyTool.GetLocalPlayer().CalcPos(this);
         RefreshHp();
+    }
+    private void OnDestroy()
+    {
+        MyTool.GetLocalPlayer().RemoveMonster(this);
     }
 
     public void GetDamage(int damage, int bulletShooterCode)

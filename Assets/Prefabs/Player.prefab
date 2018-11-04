@@ -1842,6 +1842,8 @@ MonoBehaviour:
   _playerId: -1
   _maxHp: 100
   attackAble: 1
+  monsterFinderObject: {fileID: 1070332303353294, guid: c63beed3d2dc0894ab14b25ad161c69c,
+    type: 2}
 --- !u!114 &114781143233001102
 MonoBehaviour:
   m_ObjectHideFlags: 1

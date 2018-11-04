@@ -25,7 +25,8 @@ public class PlayerCamera : MonoBehaviour {
 	void Update () {
         if (_localPlayer == null || _pa == null) return;
         if (_localPlayer.transform.position.y >= 50f) return;
-        targetVec = (_localPlayer.transform.position + _pa.transform.position)/2;
+        //targetVec = (_localPlayer.transform.position * 3 + _pa.transform.position) / 4;
+        targetVec = _localPlayer.transform.position;
         targetVec = new Vector3(Mathf.Clamp(targetVec.x, -clampPosX, clampPosX),
             Mathf.Clamp(targetVec.y, -clampPosY, clampPosY),
             -10.0f);

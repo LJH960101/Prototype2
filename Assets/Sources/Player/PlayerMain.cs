@@ -60,6 +60,53 @@ public class PlayerMain : NetworkBehaviour {
         }
     }
 
+    List<Monster> monsters;
+    Dictionary<Monster, GameObject> monsterFinders;
+    [SerializeField]
+    GameObject monsterFinderObject;
+    
+    public void AddMonster(Monster monster)
+    {
+        monsters.Add(monster);
+        monsterFinders[monster] = Instantiate(monsterFinderObject, GameObject.Find("Canvas").transform);
+    }
+    public void RemoveMonster(Monster monster)
+    {
+        monsters.Add(monster);
+        Destroy(monsterFinders[monster]);
+        monsterFinders.Remove(monster);
+    }
+
+    public void CalcPos(Monster monster)
+    {
+        CalcPos(monster, monsterFinders[monster]);
+    }
+    public void CalcPos(Monster monster, GameObject finder)
+    {
+        Vector3 moveDirection = monster.transform.position - myCamera.transform.position;
+        float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+        finder.transform.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
+
+        Vector2 newVec = monster.transform.position - myCamera.transform.position;
+        newVec.x = Mathf.Clamp(newVec.x * 30f, -860f, 860f);
+        newVec.y = Mathf.Clamp(newVec.y * 30f, -480f, 430f);
+
+        if (newVec.x >= -850f && newVec.x <= 850f && newVec.y >= -470f && newVec.y <= 420f) finder.SetActive(false);
+        else finder.SetActive(true);
+        finder.GetComponent<RectTransform>().anchoredPosition = newVec;
+    }
+    private void Update()
+    {
+        if (!attackAble && !isLocalPlayer) return;
+        foreach(var monsterFinder in monsterFinders)
+        {
+            Monster monster = monsterFinder.Key;
+            GameObject finder = monsterFinder.Value;
+
+            CalcPos(monster, finder);
+        }
+    }
+
     [Command]
     public void CmdAddMoney(int money)
     {
@@ -157,9 +204,12 @@ public class PlayerMain : NetworkBehaviour {
         hitable = true;
     }
 
+    GameObject myCamera;
     // Use this for initialization
     void Start ()
     {
+        monsters = new List<Monster>();
+        monsterFinders = new Dictionary<Monster, GameObject>();
         _pc = GetComponent<PlayerConstant>();
         pn = GetComponent<PlayerNetwork>();
         if (isLocalPlayer)
@@ -168,6 +218,7 @@ public class PlayerMain : NetworkBehaviour {
             _moneyText = UIManager.GetInstance().inGameUI.transform.Find("Money").GetComponent<UnityEngine.UI.Text>();
             if (_moneyText == null) Debug.LogError("Cant get money text");
             FindObjectOfType<PlayerCamera>().SetLocalCharacter(this);
+            myCamera = FindObjectOfType<PlayerCamera>().gameObject;
         }
     }
 }

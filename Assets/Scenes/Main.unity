@@ -245,7 +245,7 @@ Prefab:
     - target: {fileID: 114315225263318268, guid: efe1097363e48e14dbc8043933c27d60,
         type: 2}
       propertyPath: monsterSpawnGab
-      value: 60
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4548329872339092, guid: efe1097363e48e14dbc8043933c27d60, type: 2}
       propertyPath: m_LocalPosition.y
