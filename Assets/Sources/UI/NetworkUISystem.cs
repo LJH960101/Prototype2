@@ -15,6 +15,7 @@ public class NetworkUISystem : NetworkBehaviour
     int score2;
     [SyncVar(hook = "UpdateTimer")]
     float _timer;
+    [SerializeField]
     float gameTime = 50f;
 
     private void Start()
@@ -78,9 +79,7 @@ public class NetworkUISystem : NetworkBehaviour
     }
     void ShowWinnerPanel()
     {
-        if (score1 > score2) WinnerPanel.GetInstance().SetWinner(1);
-        else if (score1 < score2) WinnerPanel.GetInstance().SetWinner(2);
-        else WinnerPanel.GetInstance().SetWinner(0);
+        WinnerPanel.GetInstance().SetWinner(score1, score2);
         WinnerPanel.GetInstance().Show();
     }
     public void OnStartButton()
@@ -124,7 +123,11 @@ public class NetworkUISystem : NetworkBehaviour
     }
     void UpdateTimerUI()
     {
-        timerText.text = (int)_timer + "";
+        string timerM = ((int)_timer / 60) + "";
+        string timerS = ((int)_timer % 60) + "";
+        if (timerM.Length == 1) timerM = "0" + timerM;
+        if (timerS.Length == 1) timerS = "0" + timerS;
+        timerText.text = timerM + ":"  + timerS;
     }
     private static NetworkUISystem instance;
     public static NetworkUISystem GetInstance()

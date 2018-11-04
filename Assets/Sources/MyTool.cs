@@ -54,4 +54,9 @@ class MyTool
         var objects = GameObject.FindGameObjectsWithTag("Stuff");
         return GetStuffObject(stuffType, objects);
     }
+    public static void Log(string log)
+    {
+        UnityEngine.UI.Text text = GameObject.Find("Canvas").transform.Find("Log").GetComponent<UnityEngine.UI.Text>();
+        text.text = text.text + log + "\n";
+    }
 }

@@ -95,8 +95,29 @@ public class PlayerMain : NetworkBehaviour {
         else finder.SetActive(true);
         finder.GetComponent<RectTransform>().anchoredPosition = newVec;
     }
+
+    void SyncHealthToClient()
+    {
+        RpcSyncHealth(_hp);
+    }
+    [ClientRpc]
+    void RpcSyncHealth(int health)
+    {
+        _hp = health;
+        RefreshHp();
+    }
+    float syncTimer = 1.0f;
     private void Update()
     {
+        if (isServer)
+        {
+            syncTimer -= Time.deltaTime;
+            if(syncTimer <= 0f)
+            {
+                SyncHealthToClient();
+                syncTimer += 1.0f;
+            }
+        }
         if (!attackAble && !isLocalPlayer) return;
         foreach(var monsterFinder in monsterFinders)
         {
@@ -122,12 +143,12 @@ public class PlayerMain : NetworkBehaviour {
         RefreshHp();
     }
 
-    [Command]
-    public void CmdGetDamage(int damage)
+    public void GetDamage(int damage)
     {
         if (!hitable) return;
+        if (isServer) syncTimer += 1.0f;
         _hp -= damage;
-        if (_hp <= 0) CmdDie();
+        if (_hp <= 0 && isServer) CmdDie();
         else RefreshHp();
     }
 
@@ -148,6 +169,8 @@ public class PlayerMain : NetworkBehaviour {
     [Command]
     public void CmdGoToPrison()
     {
+        transform.Find("Model").gameObject.SetActive(false);
+        transform.Find("HPFrame").gameObject.SetActive(false);
         attackAble = false;
         CmdMoveTo(GameObject.FindGameObjectWithTag("Prison").transform.position);
     }
@@ -193,6 +216,8 @@ public class PlayerMain : NetworkBehaviour {
     public void Spawn()
     {
         if (NetworkUISystem.GetInstance().UM.State != UIManager.UIState.INGAME) return;
+        transform.Find("Model").gameObject.SetActive(true);
+        transform.Find("HPFrame").gameObject.SetActive(true);
         attackAble = true;
         CmdMoveTo(GameObject.FindGameObjectWithTag("Spawn" + (((PlayerId + 1) % 2) + 1)).transform.position);
         hitable = false;

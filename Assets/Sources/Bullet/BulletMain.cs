@@ -20,9 +20,11 @@ public class BulletMain : NetworkBehaviour {
     bool onLerp;
     float lerpCounter;
     const float lerpTime = 1f;
+    bool onDestroy = false;
 
 	// Use this for initialization
 	void Start () {
+        onDestroy = false;
         realPos = transform.position;
         initVelocity = transform.GetComponent<Rigidbody>().velocity;
         initPos = MyTool.GetPlayerGameObject(_bulletTargetPlayer).transform.position;
@@ -53,12 +55,7 @@ public class BulletMain : NetworkBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!isServer)
-        {
-            if (other.transform.tag == "Bullet") return;
-            else if (other.transform.tag == "Player" && BulletTargetPlayer % 2 == other.gameObject.GetComponent<PlayerMain>().PlayerId % 2) return;
-            else Destroy(gameObject);
-        }
+        if (onDestroy) return;
         if (other.transform.tag == "Player")
         {
             if (BulletTargetPlayer % 2 == other.gameObject.GetComponent<PlayerMain>().PlayerId % 2)
@@ -67,9 +64,10 @@ public class BulletMain : NetworkBehaviour {
             }
             Vector3 bulletForce = initVelocity.normalized * damage/2f * forcePower;
             bulletForce.y = bulletForce.y * 0.01f;
-            other.gameObject.GetComponent<PlayerMain>().CmdGetDamage(damage);
+            other.gameObject.GetComponent<PlayerMain>().GetDamage(damage);
             other.gameObject.GetComponent<Rigidbody>().AddForce(bulletForce);
             Destroy(gameObject);
+            onDestroy = true;
         }
         else if (other.transform.tag == "Monster")
         {
@@ -77,11 +75,13 @@ public class BulletMain : NetworkBehaviour {
             other.gameObject.GetComponent<Monster>().GetDamage(damage, _bulletTargetPlayer);
             other.gameObject.GetComponent<Rigidbody>().AddForce(bulletForce);
             Destroy(gameObject);
+            onDestroy = true;
         }
         else if (other.transform.tag == "Bullet") return;
         else
         {
             Destroy(gameObject);
+            onDestroy = true;
         }
     }
 }

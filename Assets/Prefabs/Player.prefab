@@ -1742,8 +1742,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.1, y: 3.1, z: 20}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.7827587, y: 3.7822886, z: 20}
+  m_Center: {x: 0, y: -0.16147089, z: 0}
 --- !u!65 &65414260121437728
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -1791,7 +1791,7 @@ MonoBehaviour:
   m_RotationSyncCompression: 0
   m_SyncSpin: 0
   m_MovementTheshold: 0.001
-  m_VelocityThreshold: 0.0001
+  m_VelocityThreshold: 0.001
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1

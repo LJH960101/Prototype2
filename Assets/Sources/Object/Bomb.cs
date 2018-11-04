@@ -42,14 +42,15 @@ public class Bomb : NetworkBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.transform.tag == "Player" && other.GetComponent<PlayerMain>().isLocalPlayer)
+        if (!isServer) return;
+        if(other.transform.tag == "Player")
         {
             if(other.GetComponent<PlayerMain>().PlayerId%2 != ownPlayerId % 2)
             {
                 other.GetComponent<PlayerMain>().CmdDie();
             }
         }
-        else if(other.transform.tag == "Monster" && isServer)
+        else if(other.transform.tag == "Monster")
         {
             other.transform.GetComponent<Monster>().GetDamage(10000, ownPlayerId);
         }

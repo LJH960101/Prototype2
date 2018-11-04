@@ -16,12 +16,13 @@ public class WinnerPanel : MonoBehaviour {
     {
         gameObject.SetActive(false);
     }
-    public void SetWinner(int whoIsWinner)
+    public void SetWinner(int score1, int score2)
     {
         if(text == null) text = transform.Find("Text").GetComponent<UnityEngine.UI.Text>();
-        if (whoIsWinner == 1) text.text = "팀 1이 이겼습니다!!";
-        else if (whoIsWinner == 2) text.text = "팀 2가 이겼습니다!!";
-        else text.text = "자강두천 오지네";
+        string newText = "1팀: " + score1 + "\n2팀: " + score2 + "\n최종 승리: ";
+        if (score1 > score2) newText = newText + "1팀";
+        else newText = newText + "2팀";
+        text.text = newText;
     }
 
     private static WinnerPanel instance;

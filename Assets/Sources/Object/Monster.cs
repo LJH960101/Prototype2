@@ -60,9 +60,8 @@ public class Monster : NetworkBehaviour
 
     public void GetDamage(int damage, int bulletShooterCode)
     {
-        if (!isServer) Debug.Log("GetDamage Only Work on server.... It will be ignore..");
         _hp -= damage;
-        if (_hp <= 0)
+        if (_hp <= 0 && isServer)
         {
             MyTool.GetPlayerGameObject(bulletShooterCode).GetComponent<PlayerNetwork>().CmdAddScore(bulletShooterCode%2==1, 800);
             Destroy(gameObject);

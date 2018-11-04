@@ -12,6 +12,11 @@ public class PlayerCamera : MonoBehaviour {
     [SerializeField]
     float cameraSpeed = 3f;
     Vector3 targetVec;
+    GameObject background;
+    private void Start()
+    {
+        background = transform.Find("Background").gameObject;
+    }
     public void SetLocalCharacter(PlayerMain pm)
     {
         _localPlayer = pm;
@@ -32,5 +37,9 @@ public class PlayerCamera : MonoBehaviour {
             -10.0f);
 
         transform.position = Vector3.MoveTowards(transform.position, targetVec, cameraSpeed);
-	}
+        Vector3 newVec = transform.position + transform.position / -10f;
+        newVec.z = 7f;
+        background.transform.position = newVec;
+
+    }
 }

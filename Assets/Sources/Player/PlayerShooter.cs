@@ -41,36 +41,38 @@ public class PlayerShooter : NetworkBehaviour
 	}
     void preShot(int playerId, Vector2 shootForce, Vector3 startPos)
     {
+        if (isServer) return;
         _pa.RunShootAnimation();
         var bulletObj = Instantiate(_pc.Bullet);
         bulletObj.transform.position = startPos;
         bulletObj.GetComponent<BulletMain>().BulletTargetPlayer = playerId;
         bulletObj.GetComponent<Rigidbody>().velocity = shootForce * _pc.ShootPower * 0.8f;
-        bulletObj.GetComponent<BulletMain>().damage = 0;
+        bulletObj.GetComponent<BulletMain>().damage = _pc.Damage;
         Destroy(bulletObj, 10.0f);
     }
     [Command]
     void CmdShoot(int playerId, Vector2 shootForce, Vector3 startPos)
     {
-        var bulletObj = Instantiate(_pc.FakeBullet);
+        _pa.RunShootAnimation();
+        var bulletObj = Instantiate(_pc.Bullet);
         bulletObj.transform.position = startPos;
         bulletObj.GetComponent<BulletMain>().BulletTargetPlayer = playerId;
         bulletObj.GetComponent<Rigidbody>().velocity = shootForce * _pc.ShootPower;
         bulletObj.GetComponent<BulletMain>().damage = _pc.Damage;
-        NetworkServer.Spawn(bulletObj);
         Destroy(bulletObj, 10.0f);
         RpcShoot(playerId, shootForce, startPos);
     }
     [ClientRpc]
     void RpcShoot(int playerId, Vector2 shootForce, Vector3 startPos)
     {
+        if (isServer) return;
         _pa.RunShootAnimation();
         if (playerId == MyTool.GetLocalPlayer().PlayerId) return;
         var bulletObj = Instantiate(_pc.Bullet);
         bulletObj.transform.position = startPos;
         bulletObj.GetComponent<BulletMain>().BulletTargetPlayer = playerId;
         bulletObj.GetComponent<Rigidbody>().velocity = shootForce * _pc.ShootPower;
-        bulletObj.GetComponent<BulletMain>().damage = 0;
+        bulletObj.GetComponent<BulletMain>().damage = _pc.Damage;
         Destroy(bulletObj, 10.0f);
         Debug.Log(3);
     }
