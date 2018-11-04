@@ -75,7 +75,9 @@ public class PlayerMovement : NetworkBehaviour
     void BuyItem(int stuffCode)
     {
         Stuff stuff = MyTool.GetStuff(stuffCode);
+
         if (stuff == null) Debug.LogError("Not exist stuffCode");
+        if (!_pm.attackAble && stuff.stuffType == Stuff.StuffType.BOMB) return;
         if (stuff.GetPrice() < _pm.Money)
         {
             _pm.CmdAddMoney(-stuff.GetPrice());
