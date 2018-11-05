@@ -8,8 +8,15 @@ public class Money : NetworkBehaviour
     int moneyValue = 30;
     int bigMoneyValue = 70;
     bool isBig;
+
+    GameObject drop, money;
     private void Start()
     {
+        drop = transform.Find("DropImage").gameObject;
+        money = transform.Find("MoneyImage").gameObject;
+        money.SetActive(false);
+        drop.SetActive(true);
+
         if (!isServer) return;
         if (UnityEngine.Random.Range(0, 10) == 1)
         {
@@ -24,6 +31,11 @@ public class Money : NetworkBehaviour
     {
         isBig = true;
         transform.localScale = new Vector3(transform.localScale.x * 2f, transform.localScale.y * 2f, transform.localScale.z * 2f);
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        money.SetActive(true);
+        drop.SetActive(false);
     }
     private void OnTriggerEnter(Collider other)
     {

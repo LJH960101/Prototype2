@@ -73,6 +73,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 10
   forcePower: 100
+  attackEffect: {fileID: 1794284158975034, guid: f8d1a69ac438d5242b5d3aa2884aa59e,
+    type: 2}
+  hitEffect: {fileID: 1623531546773928, guid: 474238dad6ce42e4eb313c0cc6d18e74, type: 2}
 --- !u!114 &114802712143954850
 MonoBehaviour:
   m_ObjectHideFlags: 1

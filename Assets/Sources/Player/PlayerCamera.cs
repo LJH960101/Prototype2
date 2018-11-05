@@ -16,6 +16,8 @@ public class PlayerCamera : MonoBehaviour {
     private void Start()
     {
         background = transform.Find("Background").gameObject;
+        Screen.SetResolution(1920, 1080, true);
+        Camera.main.aspect = 1920f / 1080f;
     }
     public void SetLocalCharacter(PlayerMain pm)
     {

@@ -113,7 +113,7 @@ public class PlayerMovement : NetworkBehaviour
     }
     private void FixedUpdate()
     {
-        if (isServer && (transform.position.x <= -45 || transform.position.x >= 45))
+        if (isServer && (transform.position.x <= -39 || transform.position.x >= 37))
         {
             CmdMoveToPortal();
         }

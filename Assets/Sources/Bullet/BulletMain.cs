@@ -53,6 +53,22 @@ public class BulletMain : NetworkBehaviour {
         }
     }
 
+    public GameObject attackEffect;
+    public GameObject hitEffect;
+    void DestroyObject()
+    {
+        Vector3 newVec = transform.position;
+        newVec.z = -4f;
+        Instantiate(attackEffect, newVec, Quaternion.identity);
+        Destroy(gameObject);
+        onDestroy = true;
+    }
+    void InstantiateHitEffect(Transform pos)
+    {
+        Vector3 newVec = pos.position;
+        newVec.z = -4f;
+        Instantiate(hitEffect, newVec, Quaternion.identity);
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (onDestroy) return;
@@ -66,22 +82,21 @@ public class BulletMain : NetworkBehaviour {
             bulletForce.y = bulletForce.y * 0.01f;
             other.gameObject.GetComponent<PlayerMain>().GetDamage(damage);
             other.gameObject.GetComponent<Rigidbody>().AddForce(bulletForce);
-            Destroy(gameObject);
-            onDestroy = true;
+            InstantiateHitEffect(other.gameObject.transform);
+            DestroyObject();
         }
         else if (other.transform.tag == "Monster")
         {
             Vector3 bulletForce = initVelocity.normalized * damage * forcePower;
             other.gameObject.GetComponent<Monster>().GetDamage(damage, _bulletTargetPlayer);
             other.gameObject.GetComponent<Rigidbody>().AddForce(bulletForce);
-            Destroy(gameObject);
-            onDestroy = true;
+            InstantiateHitEffect(other.gameObject.transform);
+            DestroyObject();
         }
         else if (other.transform.tag == "Bullet") return;
         else
         {
-            Destroy(gameObject);
-            onDestroy = true;
+            DestroyObject();
         }
     }
 }
