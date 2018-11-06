@@ -16,7 +16,6 @@ public class Bomb : NetworkBehaviour {
         if (UnityEngine.Random.Range(0, 2) == 1)
         {
             transform.position = new Vector3(-55, transform.position.y, -5f);
-            GetComponent<SpriteRenderer>().flipX = true;
             GetComponent<Rigidbody>().velocity = new Vector3(speed, 0.0f, 0.0f);
             bGoRight = true;
         }
@@ -24,6 +23,7 @@ public class Bomb : NetworkBehaviour {
         {
             transform.position = new Vector3(55, transform.position.y, -5f);
             GetComponent<Rigidbody>().velocity = new Vector3(-speed, 0.0f, 0.0f);
+            GetComponent<SpriteRenderer>().flipX = true;
             bGoRight = false;
         }
     }

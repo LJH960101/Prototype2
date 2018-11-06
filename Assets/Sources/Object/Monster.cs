@@ -24,6 +24,8 @@ public class Monster : NetworkBehaviour
     void ChangeFlipState()
     {
         _sr.flipX = onFlip;
+        move.GetComponent<SpriteRenderer>().flipX = onFlip;
+        attack.GetComponent<SpriteRenderer>().flipX = onFlip;
     }
     public override void OnStartClient()
     {
@@ -42,7 +44,8 @@ public class Monster : NetworkBehaviour
 
     List<Transform> playerTransforms;
     Transform targetTransform = null;
-	// Use this for initialization
+    // Use this for initialization
+    GameObject move, attack;
 	void Start () {
         playerTransforms = new List<Transform>();
         var players = GameObject.FindObjectsOfType<PlayerMain>();
@@ -52,6 +55,10 @@ public class Monster : NetworkBehaviour
         MyTool.GetLocalPlayer().AddMonster(this);
         MyTool.GetLocalPlayer().CalcPos(this);
         RefreshHp();
+        move = transform.Find("MonsterMove").gameObject;
+        attack = transform.Find("MonsterAttack").gameObject;
+        move.SetActive(true);
+        attack.SetActive(false);
     }
     private void OnDestroy()
     {
@@ -72,6 +79,7 @@ public class Monster : NetworkBehaviour
 	// Update is called once per frame
 	void Update () {
         if (!isServer) return;
+        if (!move.activeSelf) return;
 
         Transform minTransform = null;
         float minDist = float.MaxValue;
@@ -94,9 +102,30 @@ public class Monster : NetworkBehaviour
             Vector3 newVec = (targetTransform.position - transform.position).normalized * speed;
             newVec.z = 0.0f;
             _rb.velocity = newVec;
+
+            if(Vector2.Distance(transform.position, targetTransform.position) <= 1.5f)
+            {
+                move.SetActive(false);
+                attack.GetComponent<Animator>().Rebind();
+                attack.SetActive(true);
+                Invoke("AttackEnd", attack.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
+            }
         }
     }
-
+    void AttackEnd()
+    {
+        move.SetActive(true);
+        attack.SetActive(false);
+        if (!isServer) return;
+        GameObject other = targetTransform.gameObject;
+        if (Vector2.Distance(other.transform.position, transform.position) <= 2.5f)
+        {
+            var playerMain = other.GetComponent<PlayerMain>();
+            if (playerMain.isLocalPlayer)
+                playerMain.CmdDie();
+        }
+    }
+    /*
     private void OnTriggerEnter(Collider other)
     {
         if(other.transform.tag == "Player")
@@ -105,5 +134,5 @@ public class Monster : NetworkBehaviour
             if (playerMain.isLocalPlayer)
                 playerMain.CmdDie();
         }
-    }
+    }*/
 }

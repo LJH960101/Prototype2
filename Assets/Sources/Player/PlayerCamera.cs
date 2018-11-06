@@ -40,7 +40,7 @@ public class PlayerCamera : MonoBehaviour {
 
         transform.position = Vector3.MoveTowards(transform.position, targetVec, cameraSpeed);
         Vector3 newVec = transform.position + transform.position / -10f;
-        newVec.z = 7f;
+        newVec.z = 15f;
         background.transform.position = newVec;
 
     }
