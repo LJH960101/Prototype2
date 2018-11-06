@@ -37,6 +37,8 @@ public class Money : NetworkBehaviour
         money.SetActive(true);
         drop.SetActive(false);
     }
+    [SerializeField]
+    AudioClip popCornGet;
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
@@ -46,6 +48,7 @@ public class Money : NetworkBehaviour
                 if(isBig) other.gameObject.GetComponent<PlayerMain>().CmdAddMoney(bigMoneyValue);
                 else other.gameObject.GetComponent<PlayerMain>().CmdAddMoney(moneyValue);
             }
+            MyTool.GetLocalPlayer().GetComponent<AudioSource>().PlayOneShot(popCornGet);
             Destroy(gameObject);
         }
 

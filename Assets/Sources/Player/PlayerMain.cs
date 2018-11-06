@@ -9,6 +9,9 @@ public class PlayerMain : NetworkBehaviour {
     PlayerNetwork pn;
     GameObject _myAim = null;
     UnityEngine.UI.Text _moneyText;
+    AudioSource _as;
+    [SerializeField]
+    AudioClip dieSound;
     bool hitable = true;
     [SyncVar]
     public int _playerId = -1;
@@ -178,6 +181,7 @@ public class PlayerMain : NetworkBehaviour {
     public void RpcSpawnRagdoll()
     {
         SpawnRagdoll();
+        if (isLocalPlayer) _as.PlayOneShot(dieSound);
     }
     void SpawnRagdoll()
     {
@@ -233,6 +237,7 @@ public class PlayerMain : NetworkBehaviour {
     // Use this for initialization
     void Start ()
     {
+        _as = GetComponent<AudioSource>();
         monsters = new List<Monster>();
         monsterFinders = new Dictionary<Monster, GameObject>();
         _pc = GetComponent<PlayerConstant>();

@@ -38,8 +38,11 @@ public class NetworkUISystem : NetworkBehaviour
             }
         }
     }
+    [SerializeField]
+    AudioClip gameEndSound;
     void GameEnd()
     {
+        GetComponent<AudioSource>().PlayOneShot(gameEndSound);
         um.ChangeScreen(UIManager.UIState.LOBBY);
         FindObjectOfType<Spawner>().onSpawn = false;
         RpcOnBackToLobby();
@@ -70,6 +73,7 @@ public class NetworkUISystem : NetworkBehaviour
     public void RpcOnStartButton()
     {
         um.ChangeScreen(UIManager.UIState.INGAME);
+        GetComponent<AudioSource>().PlayOneShot(gameEndSound);
     }
     [ClientRpc]
     public void RpcOnBackToLobby()

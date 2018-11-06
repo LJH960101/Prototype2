@@ -17,8 +17,12 @@ public class LobbyUI : MonoBehaviour {
         else _umgr.lobbyUi.transform.Find("StartButton").gameObject.SetActive(false);
     }
 
+    public void Sound(float volume)
+    {
+        AudioListener.volume = volume;
+    }
 	// Update is called once per frame
 	void Update () {
-        _umgr.lobbyUi.transform.Find("PlayerCount").GetComponent<UnityEngine.UI.Text>().text = GameObject.FindGameObjectsWithTag("Player").Length + "";
+        _umgr.lobbyUi.transform.Find("PlayerCount").GetComponent<UnityEngine.UI.Text>().text = GameObject.FindGameObjectsWithTag("Player").Length + "명";
 	}
 }

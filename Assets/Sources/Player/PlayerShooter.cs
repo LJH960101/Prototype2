@@ -11,8 +11,12 @@ public class PlayerShooter : NetworkBehaviour
     PlayerMain _pm;
     float shootTimer = 0.0f;
     int _shootCount = 0;
+    AudioSource _as;
+    [SerializeField]
+    AudioClip attackSound;
     // Use this for initialization
     void Start () {
+        _as = GetComponent<AudioSource>();
         _aimObj = GameObject.FindGameObjectWithTag("Aim");
         _pc = GetComponent<PlayerConstant>();
         _pm = GetComponent<PlayerMain>();
@@ -30,6 +34,7 @@ public class PlayerShooter : NetworkBehaviour
         {
             if (onMouseDown && _pm.attackAble && shootTimer <= 0.0f)
             {
+                _as.PlayOneShot(attackSound);
                 Vector3 shootVec3D = (_aimObj.transform.position - transform.position);
                 shootVec3D.z = 0f;
                 Vector2 shootVec = shootVec3D.normalized;

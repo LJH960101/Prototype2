@@ -46,7 +46,12 @@ public class Monster : NetworkBehaviour
     Transform targetTransform = null;
     // Use this for initialization
     GameObject move, attack;
+    [SerializeField]
+    AudioClip startSound, dieSound;
+    AudioSource _as;
 	void Start () {
+        _as = GetComponent<AudioSource>();
+        _as.PlayOneShot(startSound);
         playerTransforms = new List<Transform>();
         var players = GameObject.FindObjectsOfType<PlayerMain>();
         foreach (var player in players) playerTransforms.Add(player.transform);
@@ -60,6 +65,20 @@ public class Monster : NetworkBehaviour
         move.SetActive(true);
         attack.SetActive(false);
     }
+    [ClientRpc]
+    void RpcDie()
+    {
+        Die();
+    }
+    void Die()
+    {
+        GetComponent<BoxCollider>().enabled = false;
+        GetComponent<Monster>().enabled = false;
+        transform.Find("MonsterMove").gameObject.SetActive(false);
+        transform.Find("MonsterAttack").gameObject.SetActive(false);
+        transform.Find("HPFrame").gameObject.SetActive(false);
+        _as.PlayOneShot(dieSound);
+    }
     private void OnDestroy()
     {
         MyTool.GetLocalPlayer().RemoveMonster(this);
@@ -71,7 +90,9 @@ public class Monster : NetworkBehaviour
         if (_hp <= 0 && isServer)
         {
             MyTool.GetPlayerGameObject(bulletShooterCode).GetComponent<PlayerNetwork>().CmdAddScore(bulletShooterCode%2==1, 800);
-            Destroy(gameObject);
+            Destroy(gameObject, 3.0f);
+            RpcDie();
+            Die();
         }
         else RefreshHp();
     }
