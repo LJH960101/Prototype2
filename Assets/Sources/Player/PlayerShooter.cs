@@ -50,7 +50,7 @@ public class PlayerShooter : NetworkBehaviour
         _pa.RunShootAnimation();
         var bulletObj = Instantiate(_pc.Bullet);
         bulletObj.transform.position = startPos;
-        bulletObj.GetComponent<BulletMain>().BulletTargetPlayer = playerId;
+        bulletObj.GetComponent<BulletMain>().SetPlayerId(playerId);
         bulletObj.GetComponent<Rigidbody>().velocity = shootForce * _pc.ShootPower * 0.8f;
         bulletObj.GetComponent<BulletMain>().damage = _pc.Damage;
         Destroy(bulletObj, 10.0f);
@@ -61,7 +61,7 @@ public class PlayerShooter : NetworkBehaviour
         _pa.RunShootAnimation();
         var bulletObj = Instantiate(_pc.Bullet);
         bulletObj.transform.position = startPos;
-        bulletObj.GetComponent<BulletMain>().BulletTargetPlayer = playerId;
+        bulletObj.GetComponent<BulletMain>().SetPlayerId(playerId);
         bulletObj.GetComponent<Rigidbody>().velocity = shootForce * _pc.ShootPower;
         bulletObj.GetComponent<BulletMain>().damage = _pc.Damage;
         Destroy(bulletObj, 10.0f);
@@ -75,11 +75,10 @@ public class PlayerShooter : NetworkBehaviour
         if (playerId == MyTool.GetLocalPlayer().PlayerId) return;
         var bulletObj = Instantiate(_pc.Bullet);
         bulletObj.transform.position = startPos;
-        bulletObj.GetComponent<BulletMain>().BulletTargetPlayer = playerId;
+        bulletObj.GetComponent<BulletMain>().SetPlayerId(playerId);
         bulletObj.GetComponent<Rigidbody>().velocity = shootForce * _pc.ShootPower;
         bulletObj.GetComponent<BulletMain>().damage = _pc.Damage;
         Destroy(bulletObj, 10.0f);
-        Debug.Log(3);
     }
 
     [ClientRpc]

@@ -181,12 +181,16 @@ public class PlayerMain : NetworkBehaviour {
     public void RpcSpawnRagdoll()
     {
         SpawnRagdoll();
-        if (isLocalPlayer) _as.PlayOneShot(dieSound);
     }
+    [SerializeField]
+    GameObject effect1, effect2;
     void SpawnRagdoll()
     {
+        _as.PlayOneShot(dieSound);
         GameObject ragdoll = Instantiate(_pc.RagDoll, transform.position, transform.rotation);
         CopyTransform(transform.Find("Model"), ragdoll.transform);
+        if (PlayerId % 2 == 0) Instantiate(effect1, transform.position, Quaternion.identity);
+        else Instantiate(effect2, transform.position, Quaternion.identity);
         Destroy(ragdoll, 3.0f);
     }
 

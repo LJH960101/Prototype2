@@ -8,7 +8,7 @@ public class PlayerAnimation : MonoBehaviour {
     PlayerConstant _pc;
     Transform _model;
     bool onJump;
-    public bool OnJump { get { return onJump; } }
+    public bool OnJump { set { onJump = value; } get { return onJump; } }
     float distToGround;
     // Use this for initialization
     void Start () {
@@ -37,16 +37,16 @@ public class PlayerAnimation : MonoBehaviour {
         else if (_rb.velocity.x < 0)
             _model.transform.eulerAngles = new Vector3(0f, -90f, 0f);
 
-        // Y축 변동이 있으면 점프 중임
-        if (Mathf.Abs(_rb.velocity.y) > 0.05f) onJump = true;
         // 점프 중일때 닿았는지 처리하기
-        else if(onJump && IsGrounded()) onJump = false;
+        if(onJump && IsGrounded() && Time.time - lastJumpTime >= 1f) onJump = false;
 
         _animator.SetFloat("velocityX", Mathf.Abs(_rb.velocity.x / _pc.Speed));
         _animator.SetBool("OnJump", onJump);
     }
+    [HideInInspector]
+    public float lastJumpTime;
 
     bool IsGrounded(){
-        return Physics.Raycast(transform.parent.position, -Vector3.up, distToGround + 0.5f);
+        return Physics.Raycast(transform.parent.position, -Vector3.up, distToGround + 0.1f);
     }
 }

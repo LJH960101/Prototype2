@@ -21,8 +21,15 @@ public class BulletMain : NetworkBehaviour {
     float lerpCounter;
     const float lerpTime = 1f;
     bool onDestroy = false;
-
+    [SerializeField]
+    Sprite team1, team2;
 	// Use this for initialization
+    public void SetPlayerId(int id)
+    {
+        BulletTargetPlayer = id;
+        if(BulletTargetPlayer % 2 == 0) GetComponent<SpriteRenderer>().sprite = team1;
+        else GetComponent<SpriteRenderer>().sprite = team2;
+    }
 	void Start () {
         onDestroy = false;
         realPos = transform.position;
@@ -37,6 +44,7 @@ public class BulletMain : NetworkBehaviour {
 
     private void Update()
     {
+        transform.Rotate(new Vector3(0f, 0f, Time.deltaTime) * 720f);
         if (onLerp)
         {
             realPos += initVelocity * Time.deltaTime;
@@ -62,7 +70,7 @@ public class BulletMain : NetworkBehaviour {
         Vector3 newVec = transform.position;
         newVec.z = -4f;
         Instantiate(attackEffect, newVec, Quaternion.identity);
-        GetComponent<AudioSource>().PlayOneShot(destroySound);
+        if(MyTool.GetLocalPlayer().PlayerId == BulletTargetPlayer) GetComponent<AudioSource>().PlayOneShot(destroySound);
         GetComponent<SpriteRenderer>().enabled = false;
         GetComponent<SphereCollider>().enabled = false;
         GetComponent<BulletMain>().enabled = false;

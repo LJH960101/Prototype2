@@ -49,7 +49,7 @@ public class Spawner : NetworkBehaviour
         {
             GameObject newMonster = Instantiate(monster, spawnPos.transform.position, spawnPos.transform.rotation);
             newMonster.transform.position = new Vector3(newMonster.transform.position.x, newMonster.transform.position.y, -5f);
-            Destroy(newMonster, 20f);
+            Destroy(newMonster, 60f);
             NetworkServer.Spawn(newMonster);
 
             monsterSpawnTimer += monsterSpawnGab;

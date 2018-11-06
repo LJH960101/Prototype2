@@ -389,8 +389,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hpBar: {fileID: 4807477093380008}
-  speed: 10
-  _maxHp: 100
+  speed: 20
+  _maxHp: 300
   _rewordMoney: 100
   startSound: {fileID: 8300000, guid: 2eaf0cfb1d19ae741b782d79075445aa, type: 3}
   dieSound: {fileID: 8300000, guid: 84dba6fca92df494f8ded4565da76d2f, type: 3}
@@ -406,7 +406,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 3
-  m_SendInterval: 0.2
+  m_SendInterval: 0.033333335
   m_SyncRotationAxis: 7
   m_RotationSyncCompression: 0
   m_SyncSpin: 0
@@ -458,7 +458,7 @@ SpriteRenderer:
   m_Size: {x: 3.39, y: 2.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!212 &212229358110997180

@@ -21,6 +21,8 @@ public class PlayerMovement : NetworkBehaviour
     void Jump()
     {
         _rb.AddForce(new Vector2(0f, _pc.JumpPower));
+        _pa.OnJump = true;
+        _pa.lastJumpTime = Time.time;
     }
     // Update is called once per frame
     void Update ()
@@ -129,7 +131,7 @@ public class PlayerMovement : NetworkBehaviour
     }
     private void FixedUpdate()
     {
-        if (isServer && (transform.position.x <= -39 || transform.position.x >= 37))
+        if (isServer && (transform.position.x <= -60 || transform.position.x >= 57))
         {
             CmdMoveToPortal();
         }
@@ -137,7 +139,10 @@ public class PlayerMovement : NetworkBehaviour
             return;
 
         var x = Input.GetAxis("Horizontal") * 1f * _pc.Speed;
-
-        _rb.velocity = new Vector2(x, _rb.velocity.y);
+        float gravityScale = 1f;
+        if (_rb.velocity.y < 10f) gravityScale = 2f;
+        Vector2 newVec = new Vector2(x * Time.fixedDeltaTime * 10f,
+            _rb.velocity.y + Physics.gravity.y * Time.fixedDeltaTime * gravityScale);
+        _rb.velocity = newVec;
     }
 }
