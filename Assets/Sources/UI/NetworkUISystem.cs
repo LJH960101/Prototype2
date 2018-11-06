@@ -42,7 +42,6 @@ public class NetworkUISystem : NetworkBehaviour
     AudioClip gameEndSound;
     void GameEnd()
     {
-        GetComponent<AudioSource>().PlayOneShot(gameEndSound);
         um.ChangeScreen(UIManager.UIState.LOBBY);
         FindObjectOfType<Spawner>().onSpawn = false;
         RpcOnBackToLobby();
@@ -73,7 +72,6 @@ public class NetworkUISystem : NetworkBehaviour
     public void RpcOnStartButton()
     {
         um.ChangeScreen(UIManager.UIState.INGAME);
-        GetComponent<AudioSource>().PlayOneShot(gameEndSound);
     }
     [ClientRpc]
     public void RpcOnBackToLobby()
@@ -83,6 +81,7 @@ public class NetworkUISystem : NetworkBehaviour
     }
     void ShowWinnerPanel()
     {
+        GetComponent<AudioSource>().PlayOneShot(gameEndSound);
         WinnerPanel.GetInstance().SetWinner(score1, score2);
         WinnerPanel.GetInstance().Show();
     }
