@@ -55,12 +55,18 @@ public class BulletMain : NetworkBehaviour {
 
     public GameObject attackEffect;
     public GameObject hitEffect;
+    [SerializeField]
+    AudioClip destroySound;
     void DestroyObject()
     {
         Vector3 newVec = transform.position;
         newVec.z = -4f;
         Instantiate(attackEffect, newVec, Quaternion.identity);
-        Destroy(gameObject);
+        GetComponent<AudioSource>().PlayOneShot(destroySound);
+        GetComponent<SpriteRenderer>().enabled = false;
+        GetComponent<SphereCollider>().enabled = false;
+        GetComponent<BulletMain>().enabled = false;
+        Destroy(gameObject, 1f);
         onDestroy = true;
     }
     void InstantiateHitEffect(Transform pos)

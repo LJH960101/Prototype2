@@ -18,6 +18,7 @@ public class Stuff : MonoBehaviour {
     [SerializeField]
     UnityEngine.UI.Image panel, timerPanel;
     float coolTime, coolTimeTimer;
+    float originCoolTime;
     int upgradeCount = 0;
 
     private void Start()
@@ -26,7 +27,7 @@ public class Stuff : MonoBehaviour {
         switch (stuffType)
         {
             case StuffType.BOMB:
-                coolTime = 1.0f;
+                coolTime = 15.0f;
                 break;
             case StuffType.SPEED:
                 coolTime = 10.5f;
@@ -38,6 +39,7 @@ public class Stuff : MonoBehaviour {
                 coolTime = 0.0f;
                 break;
         }
+        originCoolTime = coolTime;
         coolTimeTimer = 0.0f;
         panel.gameObject.SetActive(false);
         timerPanel.fillAmount = 1.0f;
@@ -109,7 +111,36 @@ public class Stuff : MonoBehaviour {
                 StartCoolTime();
                 break;
         }
+        var effect = Instantiate(stuffEffect, GameObject.Find("Canvas").transform);
+        effect.GetComponent<UnityEngine.UI.Image>().sprite = GetComponent<UnityEngine.UI.Image>().sprite;
+        MyTool.GetLocalPlayer().GetComponent<AudioSource>().PlayOneShot(shopSound);
+        StartAllShortCoolTime();
         return true;
+    }
+    [SerializeField]
+    AudioClip shopSound;
+    [SerializeField]
+    GameObject stuffEffect;
+    void StartAllShortCoolTime()
+    {
+        var stuffs = GameObject.FindObjectsOfType<Stuff>();
+        foreach(Stuff stuff in stuffs)
+        {
+            if (stuff.coolTimeTimer <= 0f) stuff.StartShortCoolTime();
+        }
+    }
+    public void StartShortCoolTime()
+    {
+        panel.gameObject.SetActive(true);
+        timerPanel.fillAmount = 1.0f;
+        timerPanel.gameObject.SetActive(true);
+        coolTimeTimer = 1f;
+        coolTime = 1f;
+        Invoke("BackToOriginCoolTime", 1f);
+    }
+    void BackToOriginCoolTime()
+    {
+        coolTime = originCoolTime;
     }
     void StartCoolTime()
     {
