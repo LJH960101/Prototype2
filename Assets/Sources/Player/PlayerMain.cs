@@ -189,8 +189,8 @@ public class PlayerMain : NetworkBehaviour {
         _as.PlayOneShot(dieSound);
         GameObject ragdoll = Instantiate(_pc.RagDoll, transform.position, transform.rotation);
         CopyTransform(transform.Find("Model"), ragdoll.transform);
-        if (PlayerId % 2 == 0) Instantiate(effect1, transform.position, Quaternion.identity);
-        else Instantiate(effect2, transform.position, Quaternion.identity);
+        if (PlayerId % 2 == 0) Instantiate(effect1, transform.position, Quaternion.Euler(new Vector3(-90, 0f, 0f)));
+        else Instantiate(effect2, transform.position, Quaternion.Euler(new Vector3(-90, 0f, 0f)));
         Destroy(ragdoll, 3.0f);
     }
 

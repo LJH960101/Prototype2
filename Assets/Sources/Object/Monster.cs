@@ -70,19 +70,21 @@ public class Monster : NetworkBehaviour
     {
         Die();
     }
+    bool onDie = false;
     void Die()
     {
+        onDie = true;
         GetComponent<BoxCollider>().enabled = false;
         GetComponent<Monster>().enabled = false;
         transform.Find("MonsterMove").gameObject.SetActive(false);
         transform.Find("MonsterAttack").gameObject.SetActive(false);
         transform.Find("HPFrame").gameObject.SetActive(false);
         _as.PlayOneShot(dieSound);
-    }
-    private void OnDestroy()
-    {
+        Instantiate(effect1, transform.position, Quaternion.Euler(new Vector3(-90, 0f, 0f)));
+        Instantiate(effect2, transform.position, Quaternion.Euler(new Vector3(-90, 0f, 0f)));
         MyTool.GetLocalPlayer().RemoveMonster(this);
     }
+    public GameObject effect1, effect2;
 
     public void GetDamage(int damage, int bulletShooterCode)
     {
@@ -123,8 +125,7 @@ public class Monster : NetworkBehaviour
             Vector3 newVec = (targetTransform.position - transform.position).normalized * speed;
             newVec.z = 0.0f;
             _rb.velocity = newVec;
-
-            if(Vector2.Distance(transform.position, targetTransform.position) <= 2.5f)
+            if(Vector2.Distance(transform.position, targetTransform.position) <= 3.5f)
             {
                 RpcAttackStart();
                 AttackStart();
@@ -145,11 +146,12 @@ public class Monster : NetworkBehaviour
     }
     void AttackEnd()
     {
+        if (onDie) return;
         move.SetActive(true);
         attack.SetActive(false);
         if (!isServer) return;
         GameObject other = targetTransform.gameObject;
-        if (Vector2.Distance(other.transform.position, transform.position) <= 3.5f)
+        if (Vector2.Distance(other.transform.position, transform.position) <= 4.5f)
         {
             var playerMain = other.GetComponent<PlayerMain>();
             playerMain.CmdDie();

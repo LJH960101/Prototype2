@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4208073804858582}
   - component: {fileID: 198244678762554346}
   - component: {fileID: 199038128533946398}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: DieEffect2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,7 +35,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1123455846653216}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 5.66, y: 5.29, z: 0}
+  m_LocalPosition: {x: -9.86, y: 1.5, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -110,7 +110,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
@@ -173,7 +173,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 10
+      scalar: 15
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -664,7 +664,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 5
     enabled: 1
-    type: 2
+    type: 0
     angle: 21.64895
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -695,7 +695,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.6241317
+      value: 1
       mode: 0
       spread: 0
       speed:
@@ -923,9 +923,9 @@ ParticleSystem:
       time: 0
       countCurve:
         serializedVersion: 2
-        minMaxState: 0
-        scalar: 30
-        minScalar: 0
+        minMaxState: 3
+        scalar: 45
+        minScalar: 30
         maxCurve:
           serializedVersion: 2
           m_Curve:
@@ -3676,7 +3676,7 @@ ParticleSystem:
     radiusScale: 1
     collidesWith:
       serializedVersion: 2
-      m_Bits: 4294967295
+      m_Bits: 1591
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5

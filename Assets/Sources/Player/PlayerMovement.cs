@@ -37,6 +37,7 @@ public class PlayerMovement : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha4)) BuyItem(4);
         if (Input.GetKeyDown(KeyCode.Alpha5)) BuyItem(5);
         if (Input.GetKeyDown(KeyCode.Alpha6)) _pm.CmdAddMoney(10000);
+        if (Input.GetKeyDown(KeyCode.Alpha7)) _pm.RpcSpawnRagdoll();
         transform.Translate(new Vector3(0.0f, 0.01f * Time.deltaTime, 0.0f));
     }
 
@@ -75,7 +76,6 @@ public class PlayerMovement : NetworkBehaviour
         bool pos = bomb.GetComponent<Bomb>().InitPos();
         NetworkServer.Spawn(bomb);
         RpcSpawnCutScene(pos);
-        SpawnCutScene(pos);
     }
     [SerializeField]
     GameObject right, left;
