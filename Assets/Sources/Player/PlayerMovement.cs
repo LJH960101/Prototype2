@@ -35,6 +35,7 @@ public class PlayerMovement : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha4)) BuyItem(4);
         if (Input.GetKeyDown(KeyCode.Alpha5)) BuyItem(5);
         if (Input.GetKeyDown(KeyCode.Alpha6)) _pm.CmdAddMoney(10000);
+        transform.Translate(new Vector3(0.0f, 0.01f * Time.deltaTime, 0.0f));
     }
 
     [Command]

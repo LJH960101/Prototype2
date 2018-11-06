@@ -103,14 +103,24 @@ public class Monster : NetworkBehaviour
             newVec.z = 0.0f;
             _rb.velocity = newVec;
 
-            if(Vector2.Distance(transform.position, targetTransform.position) <= 1.5f)
+            if(Vector2.Distance(transform.position, targetTransform.position) <= 2.5f)
             {
-                move.SetActive(false);
-                attack.GetComponent<Animator>().Rebind();
-                attack.SetActive(true);
-                Invoke("AttackEnd", attack.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
+                RpcAttackStart();
+                AttackStart();
             }
         }
+    }
+    [ClientRpc]
+    void RpcAttackStart()
+    {
+        AttackStart();
+    }
+    void AttackStart()
+    {
+        move.SetActive(false);
+        attack.GetComponent<Animator>().Rebind();
+        attack.SetActive(true);
+        Invoke("AttackEnd", attack.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
     }
     void AttackEnd()
     {
@@ -118,11 +128,10 @@ public class Monster : NetworkBehaviour
         attack.SetActive(false);
         if (!isServer) return;
         GameObject other = targetTransform.gameObject;
-        if (Vector2.Distance(other.transform.position, transform.position) <= 2.5f)
+        if (Vector2.Distance(other.transform.position, transform.position) <= 3.5f)
         {
             var playerMain = other.GetComponent<PlayerMain>();
-            if (playerMain.isLocalPlayer)
-                playerMain.CmdDie();
+            playerMain.CmdDie();
         }
     }
     /*

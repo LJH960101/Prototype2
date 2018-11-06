@@ -38,7 +38,7 @@ public class PlayerAnimation : MonoBehaviour {
             _model.transform.eulerAngles = new Vector3(0f, -90f, 0f);
 
         // Y축 변동이 있으면 점프 중임
-        if (Mathf.Abs(_rb.velocity.y) > 0.001f) onJump = true;
+        if (Mathf.Abs(_rb.velocity.y) > 0.05f) onJump = true;
         // 점프 중일때 닿았는지 처리하기
         else if(onJump && IsGrounded()) onJump = false;
 
@@ -47,6 +47,6 @@ public class PlayerAnimation : MonoBehaviour {
     }
 
     bool IsGrounded(){
-        return Physics.Raycast(transform.parent.position, -Vector3.up, distToGround + 0.1f);
+        return Physics.Raycast(transform.parent.position, -Vector3.up, distToGround + 0.5f);
     }
 }

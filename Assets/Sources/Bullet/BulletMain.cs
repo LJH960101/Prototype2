@@ -87,7 +87,6 @@ public class BulletMain : NetworkBehaviour {
         }
         else if (other.transform.tag == "Monster")
         {
-            Debug.Log(123);
             Vector3 bulletForce = initVelocity.normalized * damage * forcePower;
             other.gameObject.GetComponent<Monster>().GetDamage(damage, _bulletTargetPlayer);
             other.gameObject.GetComponent<Rigidbody>().AddForce(bulletForce);
