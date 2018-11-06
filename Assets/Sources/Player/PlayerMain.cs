@@ -94,7 +94,6 @@ public class PlayerMain : NetworkBehaviour {
         if (newVec.x >= -850f && newVec.x <= 850f && newVec.y >= -470f && newVec.y <= 420f) finder.SetActive(false);
         else finder.SetActive(true);
         finder.GetComponent<RectTransform>().anchoredPosition = newVec;
-        Debug.Log(newVec);
     }
 
     void SyncHealthToClient()

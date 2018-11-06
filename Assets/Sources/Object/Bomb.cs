@@ -10,7 +10,14 @@ public class Bomb : NetworkBehaviour {
     bool bGoRight;
     [SyncVar, HideInInspector]
     public int ownPlayerId;
-	public void InitPos()
+    [SyncVar(hook ="OnFlip")]
+    bool onFlip = false;
+    void OnFlip(bool onFlip)
+    {
+        if(onFlip) GetComponent<SpriteRenderer>().flipX = true;
+        else GetComponent<SpriteRenderer>().flipX = false;
+    }
+    public bool InitPos()
     {
         // 왼쪽 출몰
         if (UnityEngine.Random.Range(0, 2) == 1)
@@ -23,9 +30,11 @@ public class Bomb : NetworkBehaviour {
         {
             transform.position = new Vector3(55, transform.position.y, -5f);
             GetComponent<Rigidbody>().velocity = new Vector3(-speed, 0.0f, 0.0f);
-            GetComponent<SpriteRenderer>().flipX = true;
+            onFlip = true;
+            OnFlip(onFlip);
             bGoRight = false;
         }
+        return bGoRight;
     }
 	// Update is called once per frame
 	void Update () {

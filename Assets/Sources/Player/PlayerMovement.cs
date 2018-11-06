@@ -69,8 +69,23 @@ public class PlayerMovement : NetworkBehaviour
     {
         GameObject bomb = Instantiate(_pc.Bomb, transform.position, Quaternion.identity);
         bomb.GetComponent<Bomb>().ownPlayerId = _pm.PlayerId;
-        bomb.GetComponent<Bomb>().InitPos();
+        bool pos = bomb.GetComponent<Bomb>().InitPos();
         NetworkServer.Spawn(bomb);
+        RpcSpawnCutScene(pos);
+        SpawnCutScene(pos);
+    }
+    [SerializeField]
+    GameObject right, left;
+    [ClientRpc]
+    void RpcSpawnCutScene(bool goRight)
+    {
+        SpawnCutScene(goRight);
+    }
+    void SpawnCutScene(bool goRight)
+    {
+        var canvas = GameObject.Find("Canvas").transform;
+        if (!goRight) Instantiate(right, canvas);
+        else Instantiate(left, canvas);
     }
     void BuyItem(int stuffCode)
     {

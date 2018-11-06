@@ -26,7 +26,7 @@ public class Stuff : MonoBehaviour {
         switch (stuffType)
         {
             case StuffType.BOMB:
-                coolTime = 15.0f;
+                coolTime = 1.0f;
                 break;
             case StuffType.SPEED:
                 coolTime = 10.5f;
