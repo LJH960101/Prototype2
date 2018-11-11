@@ -151,6 +151,10 @@ public class Stuff : MonoBehaviour {
         timerPanel.gameObject.SetActive(true);
         coolTimeTimer = coolTime;
     }
+    public bool bOnCoolTime()
+    {
+        return coolTimeTimer > 0.01f;
+    }
     private void Update()
     {
         if (coolTimeTimer > 0.0f)

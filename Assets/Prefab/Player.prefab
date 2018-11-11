@@ -522,6 +522,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1928945641915646
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4217274227812572}
+  m_Layer: 0
+  m_Name: ShotPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1954141220017428
 GameObject:
   m_ObjectHideFlags: 1
@@ -695,6 +710,19 @@ Transform:
   m_Father: {fileID: 4373097716594972}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4217274227812572
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1928945641915646}
+  m_LocalRotation: {x: 0, y: -1, z: -0, w: -0.000000044703484}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4399131481106640}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4243968730791176
 Transform:
   m_ObjectHideFlags: 1
@@ -780,6 +808,7 @@ Transform:
   m_Children:
   - {fileID: 4373097716594972}
   - {fileID: 4850898126622322}
+  - {fileID: 4217274227812572}
   m_Father: {fileID: 4174834811741446}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 179.99998, z: 0}
@@ -956,8 +985,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1841622252750336}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.07, y: 1.61, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.002, y: 1.57, z: 0}
+  m_LocalScale: {x: 0.41151258, y: 0.3839671, z: 0.75241566}
   m_Children:
   - {fileID: 4723401123805986}
   m_Father: {fileID: 4174834811741446}
@@ -1322,6 +1351,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackSound: {fileID: 8300000, guid: 1f633e3889f10634c85b61dccad0ef5f, type: 3}
+  shotPoint: {fileID: 4217274227812572}
 --- !u!114 &114660417427490566
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -24,7 +24,7 @@ public class PlayerMain : NetworkBehaviour {
     [SerializeField]
     Material team1, team2;
     public bool attackAble = true;
-    public int Money { get { return _money; } }
+    public int Money { get { return _money; } set { _money = value; } }
     public int PlayerId { get { return _playerId; } }
     public override void OnStartLocalPlayer()
     {
@@ -39,6 +39,8 @@ public class PlayerMain : NetworkBehaviour {
     {
         _pc.HpBar.localScale = new Vector3((float)_hp / (float)_maxHp, 1.0f, 1.0f);
         _pc.HpBar.localPosition = new Vector3( - (1.0f - ((float)_hp / (float)_maxHp)), 0.0f, 0.0f);
+        float scale = 0.8f + (float)_maxHp / 400f;
+        transform.localScale = new Vector3(scale, scale, scale);
     }
     void OnMaxHpChange(int maxHp)
     {
@@ -156,6 +158,7 @@ public class PlayerMain : NetworkBehaviour {
 
     public void GetDamage(int damage)
     {
+        if (!isServer) return;
         if (!hitable) return;
         if (isServer) syncTimer += 1.0f;
         _hp -= damage;
@@ -197,6 +200,7 @@ public class PlayerMain : NetworkBehaviour {
         _as.PlayOneShot(dieSound);
         GameObject ragdoll = Instantiate(_pc.RagDoll, transform.position, transform.rotation);
         CopyTransform(transform.Find("Model"), ragdoll.transform);
+        ragdoll.transform.localScale = transform.localScale;
         if (PlayerId % 2 == 0) Instantiate(effect1, transform.position, Quaternion.Euler(new Vector3(-90, 0f, 0f)));
         else Instantiate(effect2, transform.position, Quaternion.Euler(new Vector3(-90, 0f, 0f)));
 

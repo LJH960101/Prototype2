@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -14,6 +15,7 @@ public class PlayerShooter : NetworkBehaviour
     AudioSource _as;
     [SerializeField]
     AudioClip attackSound;
+    public Transform shotPoint;
     // Use this for initialization
     void Start () {
         _as = GetComponent<AudioSource>();
@@ -24,7 +26,9 @@ public class PlayerShooter : NetworkBehaviour
 	}
     bool onMouseDown = false;
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
+        shotPoint.localPosition = new Vector2(0f, _pc.Damage * 0.05f);
         if (!isLocalPlayer) return;
         shootTimer -= Time.deltaTime;
         if (Input.GetMouseButtonDown(0)) onMouseDown = true;
@@ -38,8 +42,8 @@ public class PlayerShooter : NetworkBehaviour
                 Vector3 shootVec3D = (_aimObj.transform.position - transform.position);
                 shootVec3D.z = 0f;
                 Vector2 shootVec = shootVec3D.normalized;
-                preShot(_pm.PlayerId, shootVec, transform.position);
-                CmdShoot(_pm.PlayerId, shootVec, transform.position);
+                preShot(_pm.PlayerId, shootVec, shotPoint.position);
+                CmdShoot(_pm.PlayerId, shootVec, shotPoint.position);
                 shootTimer = _pc.ShootDelay;
             }
         }
@@ -50,6 +54,7 @@ public class PlayerShooter : NetworkBehaviour
         _pa.RunShootAnimation();
         var bulletObj = Instantiate(_pc.Bullet);
         bulletObj.transform.position = startPos;
+        bulletObj.transform.localScale = new Vector2((float)_pc.Damage * 0.02f, (float)_pc.Damage * 0.02f);
         bulletObj.GetComponent<BulletMain>().SetPlayerId(playerId);
         bulletObj.GetComponent<Rigidbody>().velocity = shootForce * _pc.ShootPower * 0.8f;
         bulletObj.GetComponent<BulletMain>().damage = _pc.Damage;
@@ -61,6 +66,7 @@ public class PlayerShooter : NetworkBehaviour
         _pa.RunShootAnimation();
         var bulletObj = Instantiate(_pc.Bullet);
         bulletObj.transform.position = startPos;
+        bulletObj.transform.localScale = new Vector2((float)_pc.Damage * 0.02f, (float)_pc.Damage * 0.02f);
         bulletObj.GetComponent<BulletMain>().SetPlayerId(playerId);
         bulletObj.GetComponent<Rigidbody>().velocity = shootForce * _pc.ShootPower;
         bulletObj.GetComponent<BulletMain>().damage = _pc.Damage;
@@ -75,6 +81,7 @@ public class PlayerShooter : NetworkBehaviour
         if (playerId == MyTool.GetLocalPlayer().PlayerId) return;
         var bulletObj = Instantiate(_pc.Bullet);
         bulletObj.transform.position = startPos;
+        bulletObj.transform.localScale = new Vector2((float)_pc.Damage * 0.02f, (float)_pc.Damage * 0.02f);
         bulletObj.GetComponent<BulletMain>().SetPlayerId(playerId);
         bulletObj.GetComponent<Rigidbody>().velocity = shootForce * _pc.ShootPower;
         bulletObj.GetComponent<BulletMain>().damage = _pc.Damage;

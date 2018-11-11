@@ -36,8 +36,8 @@ public class PlayerMovement : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha3)) BuyItem(3);
         if (Input.GetKeyDown(KeyCode.Alpha4)) BuyItem(4);
         if (Input.GetKeyDown(KeyCode.Alpha5)) BuyItem(5);
-        if (Input.GetKeyDown(KeyCode.Alpha6)) _pm.CmdAddMoney(10000);
-        if (Input.GetKeyDown(KeyCode.Alpha7)) _pm.RpcSpawnRagdoll();
+        if (Input.GetKeyDown(KeyCode.Alpha9)) _pm.CmdAddMoney(10000);
+        if (Input.GetKeyDown(KeyCode.Alpha8)) _pm.RpcSpawnRagdoll();
         transform.Translate(new Vector3(0.0f, 0.01f * Time.deltaTime, 0.0f));
     }
 
@@ -95,10 +95,12 @@ public class PlayerMovement : NetworkBehaviour
         Stuff stuff = MyTool.GetStuff(stuffCode);
 
         if (stuff == null) Debug.LogError("Not exist stuffCode");
+        if (stuff.bOnCoolTime()) return;
         if (!_pm.attackAble && stuff.stuffType == Stuff.StuffType.BOMB) return;
         if (stuff.GetPrice() < _pm.Money)
         {
             _pm.CmdAddMoney(-stuff.GetPrice());
+            _pm.Money -= stuff.GetPrice();
             bool successToUse = stuff.Use();
             if (successToUse)
             {

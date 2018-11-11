@@ -34,7 +34,7 @@ public class BulletMain : NetworkBehaviour {
         onDestroy = false;
         realPos = transform.position;
         initVelocity = transform.GetComponent<Rigidbody>().velocity;
-        initPos = MyTool.GetPlayerGameObject(_bulletTargetPlayer).transform.position;
+        initPos = MyTool.GetPlayerGameObject(_bulletTargetPlayer).GetComponent<PlayerShooter>().shotPoint.position;
         transform.position = initPos;
         transform.GetComponent<Rigidbody>().velocity = Vector2.zero;
         targetPos = realPos + initVelocity * lerpTime;
